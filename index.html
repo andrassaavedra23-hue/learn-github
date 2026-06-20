@@ -1,1 +1,529 @@
-﻿<!-- TODO: contenido -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Learn GitHub - Aprende Git de forma interactiva</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/inter@5.0.0/index.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/jetbrains-mono@5.0.0/index.css">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --bg: #0d1117;
+  --bg-2: #161b22;
+  --bg-3: #21262d;
+  --border: #30363d;
+  --text: #e6edf3;
+  --text-dim: #8b949e;
+  --green: #3fb950;
+  --blue: #58a6ff;
+  --purple: #bc8cff;
+  --orange: #f0883e;
+  --red: #f85149;
+}
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* NAV */
+nav {
+  background: var(--bg-2);
+  border-bottom: 1px solid var(--border);
+  padding: 15px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 700;
+  font-size: 1.2em;
+}
+.nav-logo svg { width: 28px; height: 28px; }
+.nav-user {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  font-size: 0.9em;
+}
+.nav-user.hidden { display: none; }
+.avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--blue), var(--purple));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 0.9em;
+}
+.btn-logout {
+  background: transparent;
+  color: var(--text-dim);
+  border: 1px solid var(--border);
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.85em;
+  transition: all 0.2s;
+}
+.btn-logout:hover { color: var(--red); border-color: var(--red); }
+
+/* HERO */
+.hero {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+}
+.hero-content {
+  max-width: 1000px;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: center;
+}
+.hero-text h1 {
+  font-size: 3em;
+  font-weight: 800;
+  line-height: 1.1;
+  margin-bottom: 20px;
+  background: linear-gradient(135deg, var(--green), var(--blue));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.hero-text p {
+  font-size: 1.15em;
+  color: var(--text-dim);
+  line-height: 1.6;
+  margin-bottom: 30px;
+}
+.hero-stats {
+  display: flex;
+  gap: 30px;
+  margin-bottom: 30px;
+}
+.stat {
+  text-align: center;
+}
+.stat-value {
+  font-size: 1.8em;
+  font-weight: 700;
+  color: var(--blue);
+}
+.stat-label {
+  font-size: 0.85em;
+  color: var(--text-dim);
+}
+.hero-features {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.feature {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 0.95em;
+}
+.feature-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  background: rgba(63,185,80,0.15);
+  color: var(--green);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9em;
+}
+
+/* AUTH CARD */
+.auth-card {
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 35px;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+}
+.auth-tabs {
+  display: flex;
+  background: var(--bg);
+  border-radius: 10px;
+  padding: 4px;
+  margin-bottom: 25px;
+}
+.auth-tab {
+  flex: 1;
+  padding: 10px;
+  text-align: center;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 0.9em;
+  transition: all 0.2s;
+  color: var(--text-dim);
+}
+.auth-tab.active {
+  background: var(--bg-3);
+  color: var(--text);
+}
+.auth-form { display: none; }
+.auth-form.active { display: block; }
+.form-group {
+  margin-bottom: 18px;
+}
+.form-group label {
+  display: block;
+  font-size: 0.85em;
+  color: var(--text-dim);
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+.form-group input {
+  width: 100%;
+  padding: 12px 14px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text);
+  font-family: inherit;
+  font-size: 0.95em;
+  transition: border-color 0.2s;
+}
+.form-group input:focus {
+  outline: none;
+  border-color: var(--blue);
+}
+.btn-submit {
+  width: 100%;
+  padding: 13px;
+  background: linear-gradient(135deg, var(--green), #2ea043);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 1em;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: inherit;
+}
+.btn-submit:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(63,185,80,0.3);
+}
+.form-error {
+  background: rgba(248,81,73,0.1);
+  border-left: 3px solid var(--red);
+  padding: 10px 14px;
+  border-radius: 6px;
+  font-size: 0.85em;
+  color: var(--red);
+  margin-bottom: 15px;
+  display: none;
+}
+.form-error.show { display: block; }
+.form-success {
+  background: rgba(63,185,80,0.1);
+  border-left: 3px solid var(--green);
+  padding: 10px 14px;
+  border-radius: 6px;
+  font-size: 0.85em;
+  color: var(--green);
+  margin-bottom: 15px;
+  display: none;
+}
+.form-success.show { display: block; }
+
+/* FOOTER */
+footer {
+  background: var(--bg-2);
+  border-top: 1px solid var(--border);
+  padding: 20px 40px;
+  text-align: center;
+  font-size: 0.85em;
+  color: var(--text-dim);
+}
+footer a { color: var(--blue); text-decoration: none; }
+
+/* NOTIFICATION */
+.notification {
+  position: fixed;
+  top: 80px;
+  right: 30px;
+  background: var(--bg-2);
+  border: 1px solid var(--green);
+  border-left: 4px solid var(--green);
+  padding: 15px 20px;
+  border-radius: 10px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+  transform: translateX(400px);
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  max-width: 350px;
+}
+.notification.show { transform: translateX(0); }
+.notification.error { border-color: var(--red); border-left-color: var(--red); }
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+  .hero-content { grid-template-columns: 1fr; gap: 40px; }
+  .hero-text h1 { font-size: 2.2em; }
+  nav { padding: 15px 20px; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">
+    <svg viewBox="0 0 24 24" fill="#e6edf3"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.44 9.8 8.2 11.39.6.11.82-.26.82-.58v-2.17c-3.34.73-4.04-1.42-4.04-1.42-.55-1.39-1.34-1.76-1.34-1.76-1.09-.74.08-.73.08-.73 1.2.08 1.84 1.24 1.84 1.24 1.07 1.83 2.81 1.3 3.5 1 .11-.78.42-1.3.76-1.6-2.66-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.13-.3-.54-1.52.11-3.18 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 016.02 0c2.28-1.55 3.29-1.23 3.29-1.23.66 1.66.25 2.88.12 3.18.77.84 1.24 1.91 1.24 3.22 0 4.61-2.81 5.63-5.48 5.92.43.37.81 1.1.81 2.22v3.29c0 .32.22.7.83.58C20.56 21.8 24 17.3 24 12c0-6.63-5.37-12-12-12z"/></svg>
+    <span>Learn GitHub</span>
+  </div>
+  <div class="nav-user hidden" id="navUser">
+    <div class="avatar" id="navAvatar"></div>
+    <span id="navName"></span>
+    <button class="btn-logout" onclick="logout()">Cerrar sesión</button>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-content">
+    <div class="hero-text">
+      <h1>Aprende Git & GitHub de forma interactiva</h1>
+      <p>Domina el control de versiones con módulos prácticos, terminal simulada, quizzes y un sistema de progreso que guarda tu avance automáticamente.</p>
+      
+      <div class="hero-stats">
+        <div class="stat">
+          <div class="stat-value">7</div>
+          <div class="stat-label">Módulos</div>
+        </div>
+        <div class="stat">
+          <div class="stat-value">50+</div>
+          <div class="stat-label">Ejercicios</div>
+        </div>
+        <div class="stat">
+          <div class="stat-value">8</div>
+          <div class="stat-label">Logros</div>
+        </div>
+      </div>
+
+      <div class="hero-features">
+        <div class="feature">
+          <div class="feature-icon">✓</div>
+          <span>Terminal interactiva para practicar comandos reales</span>
+        </div>
+        <div class="feature">
+          <div class="feature-icon">✓</div>
+          <span>Visualizador de branches y flujo de Git</span>
+        </div>
+        <div class="feature">
+          <div class="feature-icon">✓</div>
+          <span>Progreso guardado automáticamente</span>
+        </div>
+        <div class="feature">
+          <div class="feature-icon">✓</div>
+          <span>Sistema de XP y logros desbloqueables</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="auth-card">
+      <div class="auth-tabs">
+        <div class="auth-tab active" onclick="switchTab('login')">Iniciar sesión</div>
+        <div class="auth-tab" onclick="switchTab('register')">Registrarse</div>
+      </div>
+
+      <!-- LOGIN -->
+      <form class="auth-form active" id="loginForm" onsubmit="handleLogin(event)">
+        <div class="form-error" id="loginError"></div>
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" id="loginEmail" required placeholder="tu@email.com">
+        </div>
+        <div class="form-group">
+          <label>Contraseña</label>
+          <input type="password" id="loginPassword" required placeholder="••••••••">
+        </div>
+        <button type="submit" class="btn-submit">Entrar →</button>
+      </form>
+
+      <!-- REGISTER -->
+      <form class="auth-form" id="registerForm" onsubmit="handleRegister(event)">
+        <div class="form-error" id="registerError"></div>
+        <div class="form-success" id="registerSuccess"></div>
+        <div class="form-group">
+          <label>Nombre</label>
+          <input type="text" id="regName" required placeholder="Tu nombre">
+        </div>
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" id="regEmail" required placeholder="tu@email.com">
+        </div>
+        <div class="form-group">
+          <label>Contraseña</label>
+          <input type="password" id="regPassword" required minlength="4" placeholder="Mínimo 4 caracteres">
+        </div>
+        <button type="submit" class="btn-submit">Crear cuenta gratis</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>Proyecto de aprendizaje · Creado por <a href="https://github.com/andrassaavedra23-hue" target="_blank">Andrés Saavedra</a> · 2026</p>
+</footer>
+
+<div class="notification" id="notification">
+  <span id="notifIcon">✓</span>
+  <span id="notifText"></span>
+</div>
+
+<script>
+// ============ AUTH SYSTEM ============
+const AUTH_KEY = 'learngithub_users';
+const SESSION_KEY = 'learngithub_session';
+
+function getUsers() {
+  const data = localStorage.getItem(AUTH_KEY);
+  return data ? JSON.parse(data) : {};
+}
+
+function saveUsers(users) {
+  localStorage.setItem(AUTH_KEY, JSON.stringify(users));
+}
+
+function getSession() {
+  const data = localStorage.getItem(SESSION_KEY);
+  return data ? JSON.parse(data) : null;
+}
+
+function setSession(user) {
+  localStorage.setItem(SESSION_KEY, JSON.stringify(user));
+}
+
+function clearSession() {
+  localStorage.removeItem(SESSION_KEY);
+}
+
+function switchTab(tab) {
+  document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.auth-form').forEach(f => f.classList.remove('active'));
+  
+  if (tab === 'login') {
+    document.querySelectorAll('.auth-tab')[0].classList.add('active');
+    document.getElementById('loginForm').classList.add('active');
+  } else {
+    document.querySelectorAll('.auth-tab')[1].classList.add('active');
+    document.getElementById('registerForm').classList.add('active');
+  }
+}
+
+function handleRegister(e) {
+  e.preventDefault();
+  const name = document.getElementById('regName').value.trim();
+  const email = document.getElementById('regEmail').value.trim().toLowerCase();
+  const password = document.getElementById('regPassword').value;
+  
+  const errEl = document.getElementById('registerError');
+  const succEl = document.getElementById('registerSuccess');
+  errEl.classList.remove('show');
+  succEl.classList.remove('show');
+  
+  const users = getUsers();
+  
+  if (users[email]) {
+    errEl.textContent = 'Ya existe una cuenta con este email';
+    errEl.classList.add('show');
+    return;
+  }
+  
+  users[email] = {
+    name,
+    email,
+    password,
+    createdAt: new Date().toISOString(),
+    xp: 0,
+    completedModules: [],
+    badges: [],
+    lastModule: null
+  };
+  
+  saveUsers(users);
+  
+  succEl.textContent = '✓ Cuenta creada. Ahora inicia sesión.';
+  succEl.classList.add('show');
+  
+  setTimeout(() => switchTab('login'), 1500);
+}
+
+function handleLogin(e) {
+  e.preventDefault();
+  const email = document.getElementById('loginEmail').value.trim().toLowerCase();
+  const password = document.getElementById('loginPassword').value;
+  
+  const errEl = document.getElementById('loginError');
+  errEl.classList.remove('show');
+  
+  const users = getUsers();
+  const user = users[email];
+  
+  if (!user || user.password !== password) {
+    errEl.textContent = 'Email o contraseña incorrectos';
+    errEl.classList.add('show');
+    return;
+  }
+  
+  setSession({ email, name: user.name });
+  showNotification('✓', `¡Bienvenido, ${user.name}!`);
+  
+  setTimeout(() => {
+    window.location.href = 'dashboard.html';
+  }, 800);
+}
+
+function logout() {
+  clearSession();
+  showNotification('👋', 'Sesión cerrada');
+  setTimeout(() => location.reload(), 500);
+}
+
+function showNotification(icon, text, isError = false) {
+  const n = document.getElementById('notification');
+  document.getElementById('notifIcon').textContent = icon;
+  document.getElementById('notifText').textContent = text;
+  n.classList.toggle('error', isError);
+  n.classList.add('show');
+  setTimeout(() => n.classList.remove('show'), 2500);
+}
+
+// ============ INIT ============
+function init() {
+  const session = getSession();
+  if (session) {
+    document.getElementById('navUser').classList.remove('hidden');
+    document.getElementById('navName').textContent = session.name;
+    document.getElementById('navAvatar').textContent = session.name.charAt(0).toUpperCase();
+  }
+}
+
+init();
+</script>
+
+</body>
+</html>
+
+
