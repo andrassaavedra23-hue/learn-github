@@ -1,1 +1,254 @@
-﻿<!-- TODO: contenido -->
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Módulo 5: Branches</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/inter@5.0.0/index.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/jetbrains-mono@5.0.0/index.css">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+:root { --bg: #0d1117; --bg-2: #161b22; --bg-3: #21262d; --border: #30363d; --text: #e6edf3; --text-dim: #8b949e; --green: #3fb950; --blue: #58a6ff; --purple: #bc8cff; --orange: #f0883e; --red: #f85149; }
+body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+nav { background: var(--bg-2); border-bottom: 1px solid var(--border); padding: 15px 40px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
+.nav-left { display: flex; align-items: center; gap: 20px; }
+.btn-back { background: var(--bg-3); color: var(--text); border: 1px solid var(--border); padding: 8px 14px; border-radius: 8px; cursor: pointer; font-family: inherit; }
+.xp-badge { background: linear-gradient(135deg, var(--purple), var(--blue)); padding: 6px 14px; border-radius: 20px; font-weight: 600; font-size: 0.85em; }
+.module-progress { background: var(--bg-2); border-bottom: 1px solid var(--border); padding: 12px 40px; }
+.progress-content { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; gap: 15px; }
+.progress-track { flex: 1; height: 6px; background: var(--bg-3); border-radius: 10px; overflow: hidden; }
+.progress-fill { height: 100%; background: linear-gradient(90deg, var(--green), var(--blue)); width: 0%; transition: width 0.5s; border-radius: 10px; }
+.container { max-width: 900px; margin: 0 auto; padding: 40px; }
+.lesson { background: var(--bg-2); border: 1px solid var(--border); border-radius: 16px; padding: 35px; }
+.lesson-header { display: flex; align-items: center; gap: 15px; margin-bottom: 25px; padding-bottom: 20px; border-bottom: 1px solid var(--border); }
+.lesson-emoji { font-size: 2.5em; background: var(--bg-3); width: 70px; height: 70px; border-radius: 16px; display: flex; align-items: center; justify-content: center; }
+.branch-viz { background: var(--bg); border: 1px solid var(--border); border-radius: 12px; padding: 25px; margin: 20px 0; overflow-x: auto; }
+.branch-svg { width: 100%; min-height: 200px; }
+.branch-actions { display: flex; gap: 10px; flex-wrap: wrap; margin: 20px 0; }
+.btn-action { background: var(--bg-3); color: var(--text); border: 1px solid var(--border); padding: 10px 18px; border-radius: 8px; cursor: pointer; font-family: inherit; font-weight: 500; transition: all 0.2s; }
+.btn-action:hover { background: var(--border); transform: translateY(-2px); }
+.branch-list { margin-top: 15px; }
+.branch-chip { background: var(--bg-3); padding: 6px 12px; border-radius: 6px; font-size: 0.85em; margin: 3px; display: inline-block; font-family: 'JetBrains Mono', monospace; }
+.branch-chip.active { background: rgba(63,185,80,0.2); border: 1px solid var(--green); }
+.quiz { background: linear-gradient(135deg, rgba(188,140,255,0.05), rgba(88,166,255,0.05)); border: 1px solid var(--purple); border-radius: 12px; padding: 25px; margin: 25px 0; }
+.quiz-options { display: flex; flex-direction: column; gap: 10px; margin-top: 15px; }
+.quiz-option { background: var(--bg); border: 2px solid var(--border); padding: 12px 18px; border-radius: 8px; cursor: pointer; transition: all 0.2s; }
+.quiz-option:hover { border-color: var(--blue); }
+.quiz-option.correct { border-color: var(--green); background: rgba(63,185,80,0.1); }
+.quiz-option.wrong { border-color: var(--red); background: rgba(248,81,73,0.1); }
+.nav-buttons { display: flex; justify-content: space-between; margin-top: 30px; }
+.btn { background: var(--bg-3); color: var(--text); border: 1px solid var(--border); padding: 12px 24px; border-radius: 10px; cursor: pointer; font-family: inherit; }
+.btn-primary { background: linear-gradient(135deg, var(--green), #2ea043); border-color: var(--green); color: white; }
+.notification { position: fixed; top: 100px; right: 30px; background: var(--bg-2); border: 1px solid var(--green); border-left: 4px solid var(--green); padding: 15px 20px; border-radius: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.4); transform: translateX(400px); transition: transform 0.4s; z-index: 1000; }
+.notification.show { transform: translateX(0); }
+.info-box { background: rgba(88,166,255,0.08); border-left: 3px solid var(--blue); padding: 15px 20px; border-radius: 8px; margin: 20px 0; font-size: 0.95em; line-height: 1.6; }
+</style>
+</head>
+<body>
+<nav>
+  <div class="nav-left">
+    <button class="btn-back" onclick="window.location.href='../dashboard.html'">← Volver</button>
+    <strong>Módulo 5</strong>
+  </div>
+  <div class="xp-badge">⭐ <span id="xpCount">0</span> XP</div>
+</nav>
+<div class="module-progress">
+  <div class="progress-content">
+    <span>Progreso</span>
+    <div class="progress-track"><div class="progress-fill" id="moduleProgress"></div></div>
+    <span id="progressText">0%</span>
+  </div>
+</div>
+
+<div class="container">
+  <div class="lesson">
+    <div class="lesson-header">
+      <div class="lesson-emoji"></div>
+      <div>
+        <div style="font-size: 1.8em; font-weight: 700;">Branches: Líneas paralelas</div>
+        <div style="color: var(--text-dim);">Experimenta sin miedo a romper nada</div>
+      </div>
+    </div>
+
+    <p style="line-height: 1.7; margin-bottom: 20px;">
+      Un <strong>branch</strong> es como una línea de tiempo alternativa. Puedes crear una 
+      para experimentar, y si todo sale bien, la unes con la principal. Si no, la borras.
+    </p>
+
+    <div class="info-box">
+      <strong> Analogía del árbol:</strong><br>
+      El <code style="background:var(--bg-3);padding:2px 6px;border-radius:4px;color:var(--orange);">main</code> es el tronco principal. Los branches son ramas que crecen del tronco.
+    </div>
+
+    <h3 style="margin: 25px 0 15px;">🎮 Crea branches visualmente</h3>
+
+    <div class="branch-actions">
+      <button class="btn-action" onclick="createBranch('feature/login')"> feature/login</button>
+      <button class="btn-action" onclick="createBranch('feature/dark-mode')">🌿 feature/dark-mode</button>
+      <button class="btn-action" onclick="createBranch('fix/header-bug')">🐛 fix/header-bug</button>
+      <button class="btn-action" onclick="mergeBranch()">🔀 Merge a main</button>
+      <button class="btn-action" onclick="resetBranches()">🔄 Reiniciar</button>
+    </div>
+
+    <div class="branch-viz">
+      <svg class="branch-svg" id="branchSvg" viewBox="0 0 800 250"></svg>
+    </div>
+
+    <div class="branch-list" id="branchList"></div>
+
+    <div class="quiz" id="quiz1">
+      <div style="font-weight: 600; margin-bottom: 10px;">🧠 ¿Qué comando crea Y cambia a un nuevo branch?</div>
+      <div class="quiz-options">
+        <div class="quiz-option" onclick="answerQuiz(this, false)">git branch nuevo</div>
+        <div class="quiz-option" onclick="answerQuiz(this, true)">git checkout -b nuevo</div>
+        <div class="quiz-option" onclick="answerQuiz(this, false)">git merge nuevo</div>
+      </div>
+    </div>
+
+    <div class="nav-buttons">
+      <button class="btn" onclick="window.location.href='module-04-commits.html'">← Anterior</button>
+      <button class="btn btn-primary" onclick="completeModule()">Completar módulo →</button>
+    </div>
+  </div>
+</div>
+
+<div class="notification" id="notification"><span id="notifText"></span></div>
+
+<script>
+const MODULE_ID = 'branches';
+let xp = 0, progress = 0, branches = {}, merged = false, quizDone = false;
+let branchViz = { main: [{x: 50, y: 125}] };
+
+function createBranch(name) {
+  if (branches[name]) {
+    showNotification('Este branch ya existe');
+    return;
+  }
+  branches[name] = [{...branchViz.main[branchViz.main.length - 1]}];
+  addXP(10, `Branch ${name} creado`);
+  const br = branches[name];
+  const last = br[br.length - 1];
+  br.push({ x: last.x + 80, y: 180 });
+  renderBranchViz();
+  checkProgress();
+}
+
+function mergeBranch() {
+  const names = Object.keys(branches);
+  if (names.length === 0) { showNotification('Crea un branch primero'); return; }
+  if (merged) { showNotification('Ya hiciste merge'); return; }
+  const name = names[0];
+  const br = branches[name];
+  const last = br[br.length - 1];
+  branchViz.main.push({ x: last.x + 80, y: 125, merged: true });
+  delete branches[name];
+  merged = true;
+  addXP(20, 'Merge exitoso');
+  renderBranchViz();
+  checkProgress();
+}
+
+function resetBranches() {
+  branches = {};
+  merged = false;
+  branchViz = { main: [{x: 50, y: 125}] };
+  renderBranchViz();
+}
+
+function renderBranchViz() {
+  const svg = document.getElementById('branchSvg');
+  let html = '';
+  html += `<line x1="50" y1="125" x2="750" y2="125" stroke="#30363d" stroke-width="2" stroke-dasharray="4"/>`;
+  html += `<text x="10" y="130" fill="#8b949e" font-size="12" font-family="monospace">main</text>`;
+  
+  branchViz.main.forEach((c, i) => {
+    const color = c.merged ? '#3fb950' : '#58a6ff';
+    html += `<circle cx="${c.x}" cy="125" r="8" fill="${color}"/>`;
+    if (i === branchViz.main.length - 1) {
+      html += `<text x="${c.x - 10}" y="105" fill="#e6edf3" font-size="10" font-family="monospace">HEAD</text>`;
+    }
+  });
+  
+  const colors = ['#bc8cff', '#f0883e', '#d29922'];
+  let bi = 0;
+  Object.entries(branches).forEach(([name, commits]) => {
+    const color = colors[bi % colors.length];
+    const startCommit = branchViz.main[branchViz.main.length - 1];
+    html += `<path d="M ${startCommit.x} 125 Q ${startCommit.x + 40} 150, ${commits[0].x} 180" stroke="${color}" stroke-width="2" fill="none"/>`;
+    for (let i = 0; i < commits.length; i++) {
+      html += `<circle cx="${commits[i].x}" cy="180" r="6" fill="${color}"/>`;
+    }
+    if (commits.length > 1) {
+      html += `<line x1="${commits[0].x}" y1="180" x2="${commits[commits.length-1].x}" y2="180" stroke="${color}" stroke-width="2"/>`;
+    }
+    html += `<text x="${commits[0].x - 10}" y="205" fill="${color}" font-size="10" font-family="monospace">${name}</text>`;
+    bi++;
+  });
+  svg.innerHTML = html;
+  
+  const list = document.getElementById('branchList');
+  const allBranches = ['main', ...Object.keys(branches)];
+  list.innerHTML = '<strong style="color:var(--text-dim); font-size:0.85em;">Branches actuales:</strong><br>' +
+    allBranches.map(b => `<span class="branch-chip ${b === 'main' ? 'active' : ''}">${b === 'main' ? '* ' : ''}${b}</span>`).join('');
+}
+
+function answerQuiz(el, correct) {
+  if (quizDone) return;
+  quizDone = true;
+  el.classList.add(correct ? 'correct' : 'wrong');
+  if (correct) addXP(15, 'Quiz correcto');
+  updateProgress();
+}
+
+function checkProgress() {
+  if (Object.keys(branches).length >= 1 && merged && !branches._bonus) {
+    branches._bonus = true;
+    addXP(15, 'Branch y merge completados');
+  }
+  updateProgress();
+}
+
+function addXP(amount, reason) {
+  xp += amount;
+  document.getElementById('xpCount').textContent = xp;
+  showNotification(`+${amount} XP - ${reason}`);
+}
+
+function updateProgress() {
+  const branchProgress = (Object.keys(branches).length >= 1 ? 30 : 0) + (merged ? 40 : 0);
+  progress = Math.round(branchProgress + (quizDone ? 30 : 0));
+  document.getElementById('moduleProgress').style.width = progress + '%';
+  document.getElementById('progressText').textContent = progress + '%';
+}
+
+function completeModule() {
+  if (progress < 90) { showNotification('Crea un branch, haz merge y completa el quiz'); return; }
+  const users = JSON.parse(localStorage.getItem('learngithub_users') || '{}');
+  const session = JSON.parse(localStorage.getItem('learngithub_session'));
+  if (session && users[session.email]) {
+    users[session.email].xp = (users[session.email].xp || 0) + xp + 50;
+    if (!users[session.email].completedModules) users[session.email].completedModules = [];
+    if (!users[session.email].completedModules.includes(MODULE_ID)) users[session.email].completedModules.push(MODULE_ID);
+    users[session.email].lastModule = MODULE_ID;
+    localStorage.setItem('learngithub_users', JSON.stringify(users));
+  }
+  showNotification('¡Módulo completado! +50 XP bonus');
+  setTimeout(() => window.location.href = '../dashboard.html', 1500);
+}
+
+function showNotification(text) {
+  const n = document.getElementById('notification');
+  document.getElementById('notifText').textContent = text;
+  n.classList.add('show');
+  setTimeout(() => n.classList.remove('show'), 2500);
+}
+
+const session = JSON.parse(localStorage.getItem('learngithub_session'));
+if (session) {
+  const users = JSON.parse(localStorage.getItem('learngithub_users') || '{}');
+  if (users[session.email]) document.getElementById('xpCount').textContent = users[session.email].xp || 0;
+}
+renderBranchViz();
+</script>
+</body>
+</html><!-- TODO: contenido -->

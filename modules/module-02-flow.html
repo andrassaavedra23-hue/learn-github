@@ -1,1 +1,214 @@
-﻿<!-- TODO: contenido -->
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Módulo 2: El Flujo de Git</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/inter@5.0.0/index.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/jetbrains-mono@5.0.0/index.css">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+:root { --bg: #0d1117; --bg-2: #161b22; --bg-3: #21262d; --border: #30363d; --text: #e6edf3; --text-dim: #8b949e; --green: #3fb950; --blue: #58a6ff; --purple: #bc8cff; --orange: #f0883e; --red: #f85149; }
+body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+nav { background: var(--bg-2); border-bottom: 1px solid var(--border); padding: 15px 40px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
+.nav-left { display: flex; align-items: center; gap: 20px; }
+.btn-back { background: var(--bg-3); color: var(--text); border: 1px solid var(--border); padding: 8px 14px; border-radius: 8px; cursor: pointer; font-family: inherit; }
+.xp-badge { background: linear-gradient(135deg, var(--purple), var(--blue)); padding: 6px 14px; border-radius: 20px; font-weight: 600; font-size: 0.85em; }
+.module-progress { background: var(--bg-2); border-bottom: 1px solid var(--border); padding: 12px 40px; }
+.progress-content { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; gap: 15px; }
+.progress-track { flex: 1; height: 6px; background: var(--bg-3); border-radius: 10px; overflow: hidden; }
+.progress-fill { height: 100%; background: linear-gradient(90deg, var(--green), var(--blue)); width: 0%; transition: width 0.5s; border-radius: 10px; }
+.container { max-width: 1000px; margin: 0 auto; padding: 40px; }
+.lesson { background: var(--bg-2); border: 1px solid var(--border); border-radius: 16px; padding: 35px; }
+.lesson-header { display: flex; align-items: center; gap: 15px; margin-bottom: 25px; padding-bottom: 20px; border-bottom: 1px solid var(--border); }
+.lesson-emoji { font-size: 2.5em; background: var(--bg-3); width: 70px; height: 70px; border-radius: 16px; display: flex; align-items: center; justify-content: center; }
+.git-flow { display: flex; gap: 15px; justify-content: space-between; margin: 30px 0; flex-wrap: wrap; }
+.flow-area { flex: 1; min-width: 200px; background: var(--bg); border: 2px dashed var(--border); border-radius: 12px; padding: 20px; text-align: center; transition: all 0.3s; min-height: 150px; }
+.flow-area.active { border-color: var(--green); border-style: solid; background: rgba(63,185,80,0.05); }
+.flow-area h4 { font-size: 0.9em; color: var(--text-dim); margin-bottom: 15px; text-transform: uppercase; letter-spacing: 1px; }
+.file-chip { background: var(--bg-3); padding: 8px 14px; border-radius: 8px; font-size: 0.85em; margin: 5px; display: inline-block; font-family: 'JetBrains Mono', monospace; animation: pop 0.3s; }
+@keyframes pop { 0% { transform: scale(0); } 80% { transform: scale(1.1); } 100% { transform: scale(1); } }
+.file-chip.modified { border-left: 3px solid var(--orange); }
+.file-chip.staged { border-left: 3px solid var(--green); }
+.file-chip.committed { border-left: 3px solid var(--blue); }
+.flow-controls { display: flex; gap: 15px; justify-content: center; margin: 20px 0; }
+.btn-action { background: var(--bg-3); color: var(--text); border: 1px solid var(--border); padding: 12px 24px; border-radius: 10px; cursor: pointer; font-family: inherit; font-weight: 600; transition: all 0.2s; }
+.btn-action:hover { background: var(--border); transform: translateY(-2px); }
+.btn-action:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+.quiz { background: linear-gradient(135deg, rgba(188,140,255,0.05), rgba(88,166,255,0.05)); border: 1px solid var(--purple); border-radius: 12px; padding: 25px; margin: 25px 0; }
+.quiz-options { display: flex; flex-direction: column; gap: 10px; margin-top: 15px; }
+.quiz-option { background: var(--bg); border: 2px solid var(--border); padding: 12px 18px; border-radius: 8px; cursor: pointer; transition: all 0.2s; }
+.quiz-option:hover { border-color: var(--blue); }
+.quiz-option.correct { border-color: var(--green); background: rgba(63,185,80,0.1); }
+.quiz-option.wrong { border-color: var(--red); background: rgba(248,81,73,0.1); }
+.nav-buttons { display: flex; justify-content: space-between; margin-top: 30px; }
+.btn { background: var(--bg-3); color: var(--text); border: 1px solid var(--border); padding: 12px 24px; border-radius: 10px; cursor: pointer; font-family: inherit; }
+.btn-primary { background: linear-gradient(135deg, var(--green), #2ea043); border-color: var(--green); color: white; }
+.notification { position: fixed; top: 100px; right: 30px; background: var(--bg-2); border: 1px solid var(--green); border-left: 4px solid var(--green); padding: 15px 20px; border-radius: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.4); transform: translateX(400px); transition: transform 0.4s; z-index: 1000; }
+.notification.show { transform: translateX(0); }
+</style>
+</head>
+<body>
+<nav>
+  <div class="nav-left">
+    <button class="btn-back" onclick="window.location.href='../dashboard.html'">← Volver</button>
+    <strong>Módulo 2</strong>
+  </div>
+  <div class="xp-badge">⭐ <span id="xpCount">0</span> XP</div>
+</nav>
+<div class="module-progress">
+  <div class="progress-content">
+    <span>Progreso</span>
+    <div class="progress-track"><div class="progress-fill" id="moduleProgress"></div></div>
+    <span id="progressText">0%</span>
+  </div>
+</div>
+
+<div class="container">
+  <div class="lesson">
+    <div class="lesson-header">
+      <div class="lesson-emoji">🔄</div>
+      <div>
+        <div style="font-size: 1.8em; font-weight: 700;">El Flujo de Git</div>
+        <div style="color: var(--text-dim);">Working → Staging → Repository</div>
+      </div>
+    </div>
+
+    <p style="line-height: 1.7; margin-bottom: 20px;">
+      Todo en Git pasa por <strong>3 áreas</strong>. Mueve los archivos usando los botones para simular el flujo real.
+    </p>
+
+    <div class="git-flow">
+      <div class="flow-area" id="area-working">
+        <h4>📝 Working Directory</h4>
+        <div id="files-working"></div>
+      </div>
+      <div class="flow-area" id="area-staging">
+        <h4>📦 Staging Area</h4>
+        <div id="files-staging"></div>
+      </div>
+      <div class="flow-area" id="area-committed">
+        <h4>💾 Repository</h4>
+        <div id="files-committed"></div>
+      </div>
+    </div>
+
+    <div class="flow-controls">
+      <button class="btn-action" id="btnAdd" onclick="moveFiles('add')">📦 git add .</button>
+      <button class="btn-action" id="btnCommit" onclick="moveFiles('commit')" disabled>📸 git commit -m "mensaje"</button>
+      <button class="btn-action" onclick="resetFlow()">🔄 Reiniciar</button>
+    </div>
+
+    <div class="quiz" id="quiz1">
+      <div style="font-weight: 600; margin-bottom: 10px;">🧠 ¿Qué área prepara los archivos antes del commit?</div>
+      <div class="quiz-options">
+        <div class="quiz-option" onclick="answerQuiz(this, false)">Working Directory</div>
+        <div class="quiz-option" onclick="answerQuiz(this, true)">Staging Area</div>
+        <div class="quiz-option" onclick="answerQuiz(this, false)">Repository</div>
+      </div>
+    </div>
+
+    <div class="nav-buttons">
+      <button class="btn" onclick="window.location.href='module-01-intro.html'">← Anterior</button>
+      <button class="btn btn-primary" onclick="completeModule()">Completar módulo →</button>
+    </div>
+  </div>
+</div>
+
+<div class="notification" id="notification"><span id="notifText"></span></div>
+
+<script>
+const MODULE_ID = 'flow';
+let xp = 0, progress = 0, flowDone = false, quizDone = false;
+let files = { working: ['index.html', 'style.css', 'app.js'], staging: [], committed: [] };
+
+function updateUI() {
+  document.getElementById('files-working').innerHTML = files.working.map(f => `<span class="file-chip modified">${f}</span>`).join('');
+  document.getElementById('files-staging').innerHTML = files.staging.map(f => `<span class="file-chip staged">${f}</span>`).join('');
+  document.getElementById('files-committed').innerHTML = files.committed.map(f => `<span class="file-chip committed">${f}</span>`).join('');
+  
+  document.getElementById('area-working').classList.toggle('active', files.working.length > 0);
+  document.getElementById('area-staging').classList.toggle('active', files.staging.length > 0);
+  document.getElementById('area-committed').classList.toggle('active', files.committed.length > 0);
+  
+  document.getElementById('btnAdd').disabled = files.working.length === 0;
+  document.getElementById('btnCommit').disabled = files.staging.length === 0;
+  
+  if (files.committed.length === 3 && !flowDone) {
+    flowDone = true;
+    addXP(20, 'Flujo completado');
+  }
+  updateProgress();
+}
+
+function moveFiles(action) {
+  if (action === 'add' && files.working.length > 0) {
+    files.staging.push(...files.working);
+    files.working = [];
+    addXP(5, 'git add ejecutado');
+  } else if (action === 'commit' && files.staging.length > 0) {
+    files.committed.push(...files.staging);
+    files.staging = [];
+    addXP(10, 'git commit ejecutado');
+  }
+  updateUI();
+}
+
+function resetFlow() {
+  files = { working: ['index.html', 'style.css', 'app.js'], staging: [], committed: [] };
+  flowDone = false;
+  updateUI();
+}
+
+function answerQuiz(el, correct) {
+  if (quizDone) return;
+  quizDone = true;
+  el.classList.add(correct ? 'correct' : 'wrong');
+  if (correct) addXP(15, 'Quiz correcto');
+  updateProgress();
+}
+
+function addXP(amount, reason) {
+  xp += amount;
+  document.getElementById('xpCount').textContent = xp;
+  showNotification(`+${amount} XP - ${reason}`);
+}
+
+function updateProgress() {
+  progress = (flowDone ? 50 : 0) + (quizDone ? 50 : 0);
+  document.getElementById('moduleProgress').style.width = progress + '%';
+  document.getElementById('progressText').textContent = progress + '%';
+}
+
+function completeModule() {
+  if (progress < 100) { showNotification('Completa todas las actividades'); return; }
+  const users = JSON.parse(localStorage.getItem('learngithub_users') || '{}');
+  const session = JSON.parse(localStorage.getItem('learngithub_session'));
+  if (session && users[session.email]) {
+    users[session.email].xp = (users[session.email].xp || 0) + xp + 50;
+    if (!users[session.email].completedModules) users[session.email].completedModules = [];
+    if (!users[session.email].completedModules.includes(MODULE_ID)) users[session.email].completedModules.push(MODULE_ID);
+    users[session.email].lastModule = MODULE_ID;
+    localStorage.setItem('learngithub_users', JSON.stringify(users));
+  }
+  showNotification('¡Módulo completado! +50 XP bonus');
+  setTimeout(() => window.location.href = '../dashboard.html', 1500);
+}
+
+function showNotification(text) {
+  const n = document.getElementById('notification');
+  document.getElementById('notifText').textContent = text;
+  n.classList.add('show');
+  setTimeout(() => n.classList.remove('show'), 2500);
+}
+
+// Init
+const session = JSON.parse(localStorage.getItem('learngithub_session'));
+if (session) {
+  const users = JSON.parse(localStorage.getItem('learngithub_users') || '{}');
+  if (users[session.email]) document.getElementById('xpCount').textContent = users[session.email].xp || 0;
+}
+updateUI();
+</script>
+</body>
+</html><!-- TODO: contenido -->
