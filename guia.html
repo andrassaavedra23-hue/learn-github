@@ -1,1 +1,1680 @@
+<<<<<<< HEAD
 ﻿<!-- TODO: contenido -->
+=======
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Learn GitHub - Aprende Git de forma interactiva</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/jetbrains-mono@5.0.0/index.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/inter@5.0.0/index.css">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --bg: #0d1117;
+  --bg-2: #161b22;
+  --bg-3: #21262d;
+  --border: #30363d;
+  --text: #e6edf3;
+  --text-dim: #8b949e;
+  --green: #3fb950;
+  --blue: #58a6ff;
+  --purple: #bc8cff;
+  --orange: #f0883e;
+  --red: #f85149;
+  --yellow: #d29922;
+}
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+.mono { font-family: 'JetBrains Mono', monospace; }
+
+/* Header */
+header {
+  background: linear-gradient(135deg, var(--bg-2) 0%, #1a1f2e 100%);
+  border-bottom: 1px solid var(--border);
+  padding: 20px 40px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  backdrop-filter: blur(10px);
+}
+.header-content {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 1.3em;
+  font-weight: 700;
+}
+.logo svg { width: 32px; height: 32px; }
+.progress-bar {
+  flex: 1;
+  max-width: 400px;
+  min-width: 200px;
+}
+.progress-label {
+  font-size: 0.85em;
+  color: var(--text-dim);
+  margin-bottom: 6px;
+  display: flex;
+  justify-content: space-between;
+}
+.progress-track {
+  height: 8px;
+  background: var(--bg-3);
+  border-radius: 10px;
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--green), var(--blue));
+  width: 0%;
+  transition: width 0.5s ease;
+  border-radius: 10px;
+}
+.xp-badge {
+  background: linear-gradient(135deg, var(--purple), var(--blue));
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 0.9em;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Layout */
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 30px 40px;
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 30px;
+}
+
+/* Sidebar */
+.sidebar {
+  position: sticky;
+  top: 100px;
+  height: fit-content;
+}
+.module-list {
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 15px;
+  list-style: none;
+}
+.module-item {
+  padding: 12px 15px;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 4px;
+  transition: all 0.2s;
+  font-size: 0.9em;
+}
+.module-item:hover { background: var(--bg-3); }
+.module-item.active {
+  background: linear-gradient(90deg, rgba(88,166,255,0.15), transparent);
+  border-left: 3px solid var(--blue);
+}
+.module-item.completed .module-icon {
+  background: var(--green);
+  color: white;
+}
+.module-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--bg-3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8em;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+/* Main */
+main { min-width: 0; }
+.lesson {
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 35px;
+  margin-bottom: 25px;
+  animation: fadeIn 0.5s ease;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.lesson-header {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 20px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--border);
+}
+.lesson-emoji {
+  font-size: 2.5em;
+  background: var(--bg-3);
+  width: 70px;
+  height: 70px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.lesson-title { font-size: 1.8em; font-weight: 700; }
+.lesson-subtitle { color: var(--text-dim); font-size: 0.95em; margin-top: 4px; }
+
+/* Concept cards */
+.concept-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 15px;
+  margin: 20px 0;
+}
+.concept-card {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+  transition: all 0.3s;
+  cursor: pointer;
+}
+.concept-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--blue);
+  box-shadow: 0 8px 20px rgba(88,166,255,0.1);
+}
+.concept-icon { font-size: 2em; margin-bottom: 10px; }
+.concept-name { font-weight: 600; margin-bottom: 6px; }
+.concept-desc { font-size: 0.85em; color: var(--text-dim); line-height: 1.5; }
+
+/* Visual Git Flow */
+.git-flow {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 25px;
+  margin: 20px 0;
+}
+.flow-areas {
+  display: flex;
+  gap: 15px;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+.flow-area {
+  flex: 1;
+  min-width: 140px;
+  background: var(--bg-2);
+  border: 2px dashed var(--border);
+  border-radius: 10px;
+  padding: 15px;
+  text-align: center;
+  transition: all 0.3s;
+  position: relative;
+}
+.flow-area.active {
+  border-color: var(--green);
+  border-style: solid;
+  background: rgba(63,185,80,0.05);
+}
+.flow-area h4 {
+  font-size: 0.85em;
+  color: var(--text-dim);
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+.file-chip {
+  background: var(--bg-3);
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 0.8em;
+  margin: 3px;
+  display: inline-block;
+  font-family: 'JetBrains Mono', monospace;
+  animation: pop 0.3s ease;
+}
+@keyframes pop {
+  0% { transform: scale(0); }
+  80% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+.file-chip.modified { border-left: 3px solid var(--orange); }
+.file-chip.staged { border-left: 3px solid var(--green); }
+.file-chip.committed { border-left: 3px solid var(--blue); }
+.flow-arrow {
+  display: flex;
+  align-items: center;
+  color: var(--text-dim);
+  font-size: 1.5em;
+}
+
+/* Terminal */
+.terminal {
+  background: #000;
+  border-radius: 10px;
+  overflow: hidden;
+  margin: 20px 0;
+  border: 1px solid var(--border);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+.terminal-header {
+  background: var(--bg-3);
+  padding: 10px 15px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.terminal-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+.terminal-title {
+  margin-left: 10px;
+  font-size: 0.85em;
+  color: var(--text-dim);
+  font-family: 'JetBrains Mono', monospace;
+}
+.terminal-body {
+  padding: 15px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.9em;
+  min-height: 150px;
+  max-height: 350px;
+  overflow-y: auto;
+}
+.terminal-line {
+  margin-bottom: 4px;
+  line-height: 1.6;
+}
+.prompt { color: var(--green); }
+.cmd { color: var(--text); }
+.output { color: var(--text-dim); }
+.error { color: var(--red); }
+.success { color: var(--green); }
+.terminal-input-line {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 5px;
+}
+.terminal-input {
+  background: transparent;
+  border: none;
+  color: var(--text);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.9em;
+  flex: 1;
+  outline: none;
+}
+
+/* Interactive buttons */
+.btn {
+  background: var(--bg-3);
+  color: var(--text);
+  border: 1px solid var(--border);
+  padding: 10px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 0.9em;
+  font-weight: 500;
+  transition: all 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.btn:hover {
+  background: var(--border);
+  transform: translateY(-1px);
+}
+.btn-primary {
+  background: linear-gradient(135deg, var(--green), #2ea043);
+  border-color: var(--green);
+  color: white;
+}
+.btn-primary:hover {
+  background: linear-gradient(135deg, #2ea043, #238636);
+  box-shadow: 0 4px 12px rgba(63,185,80,0.3);
+}
+.btn-group {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin: 15px 0;
+}
+
+/* Quiz */
+.quiz {
+  background: linear-gradient(135deg, rgba(188,140,255,0.05), rgba(88,166,255,0.05));
+  border: 1px solid var(--purple);
+  border-radius: 12px;
+  padding: 25px;
+  margin: 20px 0;
+}
+.quiz-question {
+  font-size: 1.1em;
+  font-weight: 600;
+  margin-bottom: 15px;
+  display: flex;
+  gap: 10px;
+}
+.quiz-options { display: flex; flex-direction: column; gap: 10px; }
+.quiz-option {
+  background: var(--bg);
+  border: 2px solid var(--border);
+  padding: 12px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.quiz-option:hover { border-color: var(--blue); }
+.quiz-option.correct {
+  border-color: var(--green);
+  background: rgba(63,185,80,0.1);
+}
+.quiz-option.wrong {
+  border-color: var(--red);
+  background: rgba(248,81,73,0.1);
+}
+.quiz-option-letter {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--bg-3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 0.85em;
+  flex-shrink: 0;
+}
+.quiz-feedback {
+  margin-top: 15px;
+  padding: 12px;
+  border-radius: 8px;
+  font-size: 0.9em;
+  display: none;
+}
+.quiz-feedback.show { display: block; }
+.quiz-feedback.correct {
+  background: rgba(63,185,80,0.1);
+  border-left: 3px solid var(--green);
+}
+.quiz-feedback.wrong {
+  background: rgba(248,81,73,0.1);
+  border-left: 3px solid var(--red);
+}
+
+/* Branch visualizer */
+.branch-viz {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 25px;
+  margin: 20px 0;
+  overflow-x: auto;
+}
+.branch-svg { width: 100%; min-height: 200px; }
+
+/* Challenge */
+.challenge {
+  background: linear-gradient(135deg, rgba(240,136,62,0.08), rgba(210,153,34,0.08));
+  border: 1px solid var(--orange);
+  border-radius: 12px;
+  padding: 25px;
+  margin: 20px 0;
+}
+.challenge-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 15px;
+  font-size: 1.2em;
+  font-weight: 700;
+  color: var(--orange);
+}
+.challenge-steps {
+  list-style: none;
+  counter-reset: step;
+}
+.challenge-steps li {
+  counter-increment: step;
+  padding: 10px 0 10px 45px;
+  position: relative;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.challenge-steps li::before {
+  content: counter(step);
+  position: absolute;
+  left: 0;
+  top: 8px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--bg-3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 0.85em;
+  transition: all 0.3s;
+}
+.challenge-steps li.done {
+  color: var(--text-dim);
+  text-decoration: line-through;
+}
+.challenge-steps li.done::before {
+  background: var(--green);
+  color: white;
+  content: "✓";
+}
+
+/* Notification */
+.notification {
+  position: fixed;
+  top: 100px;
+  right: 30px;
+  background: var(--bg-2);
+  border: 1px solid var(--green);
+  border-left: 4px solid var(--green);
+  padding: 15px 20px;
+  border-radius: 10px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+  transform: translateX(400px);
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  max-width: 350px;
+}
+.notification.show { transform: translateX(0); }
+.notification-icon {
+  font-size: 1.5em;
+}
+.notification-content { flex: 1; }
+.notification-title { font-weight: 600; margin-bottom: 2px; }
+.notification-text { font-size: 0.85em; color: var(--text-dim); }
+
+/* Code inline */
+code {
+  background: var(--bg-3);
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.88em;
+  color: var(--orange);
+}
+
+/* Info box */
+.info-box {
+  background: rgba(88,166,255,0.08);
+  border-left: 3px solid var(--blue);
+  padding: 15px 20px;
+  border-radius: 8px;
+  margin: 15px 0;
+  font-size: 0.95em;
+  line-height: 1.6;
+}
+.warning-box {
+  background: rgba(248,81,73,0.08);
+  border-left: 3px solid var(--red);
+  padding: 15px 20px;
+  border-radius: 8px;
+  margin: 15px 0;
+  font-size: 0.95em;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .container { grid-template-columns: 1fr; padding: 20px; }
+  .sidebar { position: static; }
+  header { padding: 15px 20px; }
+  .lesson { padding: 20px; }
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--bg-3); border-radius: 5px; }
+::-webkit-scrollbar-thumb:hover { background: var(--border); }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-content">
+    <div class="logo">
+      <svg viewBox="0 0 24 24" fill="#e6edf3"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.44 9.8 8.2 11.39.6.11.82-.26.82-.58v-2.17c-3.34.73-4.04-1.42-4.04-1.42-.55-1.39-1.34-1.76-1.34-1.76-1.09-.74.08-.73.08-.73 1.2.08 1.84 1.24 1.84 1.24 1.07 1.83 2.81 1.3 3.5 1 .11-.78.42-1.3.76-1.6-2.66-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.13-.3-.54-1.52.11-3.18 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 016.02 0c2.28-1.55 3.29-1.23 3.29-1.23.66 1.66.25 2.88.12 3.18.77.84 1.24 1.91 1.24 3.22 0 4.61-2.81 5.63-5.48 5.92.43.37.81 1.1.81 2.22v3.29c0 .32.22.7.83.58C20.56 21.8 24 17.3 24 12c0-6.63-5.37-12-12-12z"/></svg>
+      <span>Learn GitHub</span>
+    </div>
+    <div class="progress-bar">
+      <div class="progress-label">
+        <span>Progreso del curso</span>
+        <span id="progressText">0%</span>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
+    </div>
+    <div class="xp-badge">
+      ⭐ <span id="xpCount">0</span> XP
+    </div>
+  </div>
+</header>
+
+<div class="container">
+  <aside class="sidebar">
+    <ul class="module-list" id="moduleList"></ul>
+  </aside>
+
+  <main id="mainContent"></main>
+</div>
+
+<div class="notification" id="notification">
+  <div class="notification-icon" id="notifIcon">🎉</div>
+  <div class="notification-content">
+    <div class="notification-title" id="notifTitle"></div>
+    <div class="notification-text" id="notifText"></div>
+  </div>
+</div>
+
+<script>
+// ============ STATE ============
+const state = {
+  xp: 0,
+  completed: new Set(),
+  currentModule: 0,
+  terminalHistory: [],
+  gitState: {
+    working: ['README.md', 'index.html', 'style.css'],
+    staged: [],
+    committed: [],
+    branch: 'main',
+    branches: ['main'],
+    commits: []
+  }
+};
+
+// ============ MODULES ============
+const modules = [
+  {
+    id: 'intro',
+    title: '¿Qué es Git?',
+    emoji: '🎯',
+    render: renderIntro
+  },
+  {
+    id: 'flow',
+    title: 'El Flujo de Git',
+    emoji: '🔄',
+    render: renderFlow
+  },
+  {
+    id: 'terminal',
+    title: 'Tu Primera Terminal',
+    emoji: '💻',
+    render: renderTerminal
+  },
+  {
+    id: 'commits',
+    title: 'Commits en Acción',
+    emoji: '📸',
+    render: renderCommits
+  },
+  {
+    id: 'branches',
+    title: 'Branches',
+    emoji: '🌿',
+    render: renderBranches
+  },
+  {
+    id: 'github',
+    title: 'GitHub & Push',
+    emoji: '☁️',
+    render: renderGitHub
+  },
+  {
+    id: 'quiz',
+    title: 'Quiz Final',
+    emoji: '🏆',
+    render: renderQuiz
+  }
+];
+
+// ============ RENDER SIDEBAR ============
+function renderSidebar() {
+  const list = document.getElementById('moduleList');
+  list.innerHTML = modules.map((m, i) => `
+    <li class="module-item ${i === state.currentModule ? 'active' : ''} ${state.completed.has(m.id) ? 'completed' : ''}" 
+        onclick="selectModule(${i})">
+      <div class="module-icon">${state.completed.has(m.id) ? '✓' : i + 1}</div>
+      <span>${m.emoji} ${m.title}</span>
+    </li>
+  `).join('');
+}
+
+function selectModule(i) {
+  state.currentModule = i;
+  renderSidebar();
+  modules[i].render();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ============ PROGRESS ============
+function addXP(amount, reason) {
+  state.xp += amount;
+  document.getElementById('xpCount').textContent = state.xp;
+  showNotification('⭐', `+${amount} XP`, reason);
+  updateProgress();
+}
+
+function completeModule(id) {
+  if (!state.completed.has(id)) {
+    state.completed.add(id);
+    renderSidebar();
+    updateProgress();
+    addXP(50, 'Módulo completado');
+    
+    // Auto-advance
+    const currentIdx = state.currentModule;
+    if (currentIdx < modules.length - 1) {
+      setTimeout(() => {
+        showNotification('➡️', 'Siguiente módulo', 'Listo para continuar');
+      }, 1500);
+    }
+  }
+}
+
+function updateProgress() {
+  const pct = Math.round((state.completed.size / modules.length) * 100);
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressText').textContent = pct + '%';
+}
+
+// ============ NOTIFICATIONS ============
+function showNotification(icon, title, text) {
+  const n = document.getElementById('notification');
+  document.getElementById('notifIcon').textContent = icon;
+  document.getElementById('notifTitle').textContent = title;
+  document.getElementById('notifText').textContent = text;
+  n.classList.add('show');
+  setTimeout(() => n.classList.remove('show'), 3000);
+}
+
+// ============ MODULE 1: INTRO ============
+function renderIntro() {
+  document.getElementById('mainContent').innerHTML = `
+    <div class="lesson">
+      <div class="lesson-header">
+        <div class="lesson-emoji">🎯</div>
+        <div>
+          <div class="lesson-title">¿Qué es Git y GitHub?</div>
+          <div class="lesson-subtitle">Entiende la diferencia en 30 segundos</div>
+        </div>
+      </div>
+
+      <p style="font-size: 1.05em; line-height: 1.7; margin-bottom: 20px;">
+        Imagina que estás escribiendo un libro. Cada capítulo que terminas, lo guardas como 
+        <code>capitulo-1.doc</code>, luego <code>capitulo-1-final.doc</code>, luego 
+        <code>capitulo-1-final-final.doc</code>... 😵
+      </p>
+
+      <div class="info-box">
+        <strong>Git</strong> es como una máquina del tiempo para tu código. Te permite guardar 
+        "fotos" de tu proyecto en diferentes momentos y volver atrás si algo sale mal.
+      </div>
+
+      <div class="concept-grid">
+        <div class="concept-card" onclick="addXP(5, 'Exploraste Git')">
+          <div class="concept-icon">⚡</div>
+          <div class="concept-name">Git</div>
+          <div class="concept-desc">Sistema que guarda el historial de cambios en tu computadora</div>
+        </div>
+        <div class="concept-card" onclick="addXP(5, 'Exploraste GitHub')">
+          <div class="concept-icon">☁️</div>
+          <div class="concept-name">GitHub</div>
+          <div class="concept-desc">La nube donde se guardan tus proyectos de Git</div>
+        </div>
+        <div class="concept-card" onclick="addXP(5, 'Exploraste Repo')">
+          <div class="concept-icon">📁</div>
+          <div class="concept-name">Repositorio</div>
+          <div class="concept-desc">Una carpeta de proyecto rastreada por Git</div>
+        </div>
+        <div class="concept-card" onclick="addXP(5, 'Exploraste Commit')">
+          <div class="concept-icon">📸</div>
+          <div class="concept-name">Commit</div>
+          <div class="concept-desc">Una "foto" del estado de tu proyecto</div>
+        </div>
+      </div>
+
+      <div class="quiz" id="quiz1">
+        <div class="quiz-question">
+          🧠 <span>¿Cuál es la diferencia principal entre Git y GitHub?</span>
+        </div>
+        <div class="quiz-options">
+          <div class="quiz-option" onclick="answerQuiz('quiz1', this, false)">
+            <div class="quiz-option-letter">A</div>
+            <div>Son lo mismo, solo tienen nombres diferentes</div>
+          </div>
+          <div class="quiz-option" onclick="answerQuiz('quiz1', this, true)">
+            <div class="quiz-option-letter">B</div>
+            <div>Git es el sistema local, GitHub es la plataforma en la nube</div>
+          </div>
+          <div class="quiz-option" onclick="answerQuiz('quiz1', this, false)">
+            <div class="quiz-option-letter">C</div>
+            <div>GitHub es más nuevo que Git</div>
+          </div>
+        </div>
+        <div class="quiz-feedback" id="quiz1-feedback"></div>
+      </div>
+
+      <div class="btn-group">
+        <button class="btn btn-primary" onclick="completeModule('intro'); selectModule(1)">
+          Continuar al siguiente módulo →
+        </button>
+      </div>
+    </div>
+  `;
+}
+
+// ============ MODULE 2: FLOW ============
+function renderFlow() {
+  document.getElementById('mainContent').innerHTML = `
+    <div class="lesson">
+      <div class="lesson-header">
+        <div class="lesson-emoji">🔄</div>
+        <div>
+          <div class="lesson-title">El Flujo de Git</div>
+          <div class="lesson-subtitle">Haz clic en las flechas para ver cómo viajan los archivos</div>
+        </div>
+      </div>
+
+      <p style="line-height: 1.7; margin-bottom: 20px;">
+        Todo en Git pasa por <strong>3 áreas</strong>. Haz clic en cada flecha para mover el archivo:
+      </p>
+
+      <div class="git-flow">
+        <div class="flow-areas">
+          <div class="flow-area" id="area-working">
+            <h4>📝 Working Directory</h4>
+            <div id="files-working"></div>
+          </div>
+          <div class="flow-arrow" onclick="moveFiles('add')" style="cursor:pointer" title="git add">
+            →<br><small style="font-size:0.5em">git add</small>
+          </div>
+          <div class="flow-area" id="area-staging">
+            <h4>📦 Staging Area</h4>
+            <div id="files-staging"></div>
+          </div>
+          <div class="flow-arrow" onclick="moveFiles('commit')" style="cursor:pointer" title="git commit">
+            →<br><small style="font-size:0.5em">git commit</small>
+          </div>
+          <div class="flow-area" id="area-committed">
+            <h4>💾 Repository</h4>
+            <div id="files-committed"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="btn-group">
+        <button class="btn" onclick="resetFlow()">🔄 Reiniciar</button>
+        <button class="btn" onclick="autoFlow()">▶️ Ver animación</button>
+      </div>
+
+      <div class="info-box">
+        <strong>💡 Analogía:</strong> Imagina que empacas una caja para enviar por correo.<br>
+        1️⃣ <strong>Working</strong>: Tus cosas están desordenadas en tu cuarto<br>
+        2️⃣ <strong>Staging</strong>: Pones en la caja solo lo que quieres enviar<br>
+        3️⃣ <strong>Repository</strong>: La caja está cerrada y etiquetada, lista para enviar
+      </div>
+
+      <div class="btn-group">
+        <button class="btn btn-primary" onclick="completeModule('flow'); selectModule(2)">
+          Continuar →
+        </button>
+      </div>
+    </div>
+  `;
+  resetFlow();
+}
+
+function resetFlow() {
+  state.gitState.working = ['README.md', 'index.html', 'style.css'];
+  state.gitState.staged = [];
+  state.gitState.committed = [];
+  renderFlowFiles();
+}
+
+function renderFlowFiles() {
+  document.getElementById('files-working').innerHTML = 
+    state.gitState.working.map(f => `<span class="file-chip modified">${f}</span>`).join('');
+  document.getElementById('files-staging').innerHTML = 
+    state.gitState.staged.map(f => `<span class="file-chip staged">${f}</span>`).join('');
+  document.getElementById('files-committed').innerHTML = 
+    state.gitState.committed.map(f => `<span class="file-chip committed">${f}</span>`).join('');
+  
+  document.getElementById('area-working').classList.toggle('active', state.gitState.working.length > 0);
+  document.getElementById('area-staging').classList.toggle('active', state.gitState.staged.length > 0);
+  document.getElementById('area-committed').classList.toggle('active', state.gitState.committed.length > 0);
+}
+
+function moveFiles(step) {
+  if (step === 'add' && state.gitState.working.length > 0) {
+    const file = state.gitState.working.shift();
+    state.gitState.staged.push(file);
+    addXP(3, 'git add ejecutado');
+  } else if (step === 'commit' && state.gitState.staged.length > 0) {
+    state.gitState.committed.push(...state.gitState.staged);
+    state.gitState.staged = [];
+    addXP(5, 'git commit ejecutado');
+  }
+  renderFlowFiles();
+}
+
+async function autoFlow() {
+  for (let i = 0; i < 3; i++) {
+    moveFiles('add');
+    await new Promise(r => setTimeout(r, 600));
+  }
+  await new Promise(r => setTimeout(r, 400));
+  moveFiles('commit');
+}
+
+// ============ MODULE 3: TERMINAL ============
+function renderTerminal() {
+  document.getElementById('mainContent').innerHTML = `
+    <div class="lesson">
+      <div class="lesson-header">
+        <div class="lesson-emoji">💻</div>
+        <div>
+          <div class="lesson-title">Tu Primera Terminal</div>
+          <div class="lesson-subtitle">Prueba los comandos reales de Git aquí</div>
+        </div>
+      </div>
+
+      <p style="line-height: 1.7; margin-bottom: 15px;">
+        Esta es una terminal simulada. Prueba estos comandos (escribe y presiona Enter):
+      </p>
+
+      <div class="btn-group">
+        <button class="btn" onclick="insertCmd('git status')">git status</button>
+        <button class="btn" onclick="insertCmd('git init')">git init</button>
+        <button class="btn" onclick="insertCmd('git add .')">git add .</button>
+        <button class="btn" onclick="insertCmd('git commit -m &quot;mensaje&quot;')">git commit</button>
+        <button class="btn" onclick="insertCmd('git log')">git log</button>
+        <button class="btn" onclick="insertCmd('help')">help</button>
+      </div>
+
+      <div class="terminal">
+        <div class="terminal-header">
+          <div class="terminal-dot" style="background:#f85149"></div>
+          <div class="terminal-dot" style="background:#d29922"></div>
+          <div class="terminal-dot" style="background:#3fb950"></div>
+          <div class="terminal-title">PowerShell - learn-github</div>
+        </div>
+        <div class="terminal-body" id="termBody">
+          <div class="terminal-line"><span class="output">Bienvenido a la terminal interactiva de Git 🚀</span></div>
+          <div class="terminal-line"><span class="output">Escribe 'help' para ver los comandos disponibles</span></div>
+          <div class="terminal-input-line">
+            <span class="prompt">PS C:\\dev\\learn-github&gt;</span>
+            <input type="text" class="terminal-input" id="termInput" autofocus 
+                   onkeydown="if(event.key==='Enter')runCmd()">
+          </div>
+        </div>
+      </div>
+
+      <div class="challenge">
+        <div class="challenge-header">🎯 Reto: Crea tu primer commit</div>
+        <ol class="challenge-steps" id="challengeSteps">
+          <li onclick="toggleStep(this)">Ejecuta <code>git init</code></li>
+          <li onclick="toggleStep(this)">Ejecuta <code>git status</code></li>
+          <li onclick="toggleStep(this)">Ejecuta <code>git add .</code></li>
+          <li onclick="toggleStep(this)">Ejecuta <code>git commit -m "mensaje"</code></li>
+          <li onclick="toggleStep(this)">Ejecuta <code>git log</code></li>
+        </ol>
+      </div>
+
+      <div class="btn-group">
+        <button class="btn btn-primary" onclick="completeModule('terminal'); selectModule(3)">
+          Continuar →
+        </button>
+      </div>
+    </div>
+  `;
+  setTimeout(() => document.getElementById('termInput').focus(), 100);
+}
+
+function insertCmd(cmd) {
+  const input = document.getElementById('termInput');
+  input.value = cmd;
+  input.focus();
+}
+
+function toggleStep(el) {
+  el.classList.toggle('done');
+  if (el.classList.contains('done')) addXP(5, 'Paso completado');
+}
+
+function runCmd() {
+  const input = document.getElementById('termInput');
+  const cmd = input.value.trim();
+  if (!cmd) return;
+  
+  const body = document.getElementById('termBody');
+  const inputLine = body.querySelector('.terminal-input-line');
+  
+  const cmdLine = document.createElement('div');
+  cmdLine.className = 'terminal-line';
+  cmdLine.innerHTML = `<span class="prompt">PS C:\\dev\\learn-github&gt;</span> <span class="cmd">${cmd}</span>`;
+  body.insertBefore(cmdLine, inputLine);
+  
+  const output = processCmd(cmd);
+  if (output) {
+    const outLine = document.createElement('div');
+    outLine.className = 'terminal-line';
+    outLine.innerHTML = output;
+    body.insertBefore(outLine, inputLine);
+  }
+  
+  input.value = '';
+  body.scrollTop = body.scrollHeight;
+}
+
+function processCmd(cmd) {
+  const c = cmd.toLowerCase().trim();
+  
+  if (c === 'help') {
+    return `<span class="output">Comandos disponibles:
+  git init        - Inicializar repositorio
+  git status      - Ver estado de archivos
+  git add .       - Agregar todos los archivos
+  git add &lt;file&gt;  - Agregar archivo específico
+  git commit -m "msg" - Guardar cambios
+  git log         - Ver historial
+  git branch      - Ver branches
+  git branch &lt;name&gt; - Crear branch
+  git checkout &lt;name&gt; - Cambiar de branch
+  git push        - Subir a GitHub
+  git pull        - Bajar de GitHub
+  clear           - Limpiar terminal</span>`;
+  }
+  
+  if (c === 'clear') {
+    const body = document.getElementById('termBody');
+    const inputLine = body.querySelector('.terminal-input-line');
+    body.innerHTML = '';
+    body.appendChild(inputLine);
+    return null;
+  }
+  
+  if (c === 'git init') {
+    addXP(10, 'git init ejecutado');
+    return `<span class="success">Initialized empty Git repository in C:/dev/learn-github/.git/</span>`;
+  }
+  
+  if (c === 'git status') {
+    addXP(5, 'git status ejecutado');
+    return `<span class="output">On branch <span class="success">main</span>
+
+Untracked files:
+  <span class="error">README.md</span>
+  <span class="error">index.html</span>
+  <span class="error">style.css</span>
+
+nothing added to commit but untracked files present</span>`;
+  }
+  
+  if (c === 'git add .' || c === 'git add --all') {
+    addXP(10, 'git add ejecutado');
+    return `<span class="success">✓ Archivos agregados al staging area</span>
+<span class="output">  <span class="success">new file:   README.md</span>
+  <span class="success">new file:   index.html</span>
+  <span class="success">new file:   style.css</span></span>`;
+  }
+  
+  if (c.startsWith('git commit')) {
+    const msg = cmd.match(/-m ["'](.+?)["']/);
+    if (!msg) return `<span class="error">error: debes incluir un mensaje con -m "mensaje"</span>`;
+    addXP(15, '¡Primer commit! 🎉');
+    const hash = Math.random().toString(16).substr(2, 7);
+    state.gitState.commits.push({ hash, msg: msg[1] });
+    return `<span class="success">[main ${hash}] ${msg[1]}</span>
+<span class="output"> 3 files changed, 42 insertions(+)</span>`;
+  }
+  
+  if (c === 'git log') {
+    if (state.gitState.commits.length === 0) {
+      return `<span class="error">fatal: your current branch 'main' does not have any commits yet</span>`;
+    }
+    addXP(5, 'git log ejecutado');
+    return state.gitState.commits.map(c => 
+      `<span class="success">commit ${c.hash}</span> <span class="output">(HEAD -> main)</span>\n<span class="output">    ${c.msg}</span>`
+    ).join('\n');
+  }
+  
+  if (c === 'git branch') {
+    return `<span class="success">* main</span>`;
+  }
+  
+  if (c.startsWith('git branch ') && !c.includes('checkout')) {
+    const name = c.split(' ')[2];
+    if (!state.gitState.branches.includes(name)) {
+      state.gitState.branches.push(name);
+      addXP(10, 'Branch creado');
+    }
+    return `<span class="success">Branch '${name}' creado</span>`;
+  }
+  
+  if (c.startsWith('git checkout')) {
+    const name = c.split(' ')[2];
+    if (state.gitState.branches.includes(name)) {
+      state.gitState.branch = name;
+      addXP(10, 'Cambiaste de branch');
+      return `<span class="success">Switched to branch '${name}'</span>`;
+    }
+    return `<span class="error">error: branch '${name}' not found</span>`;
+  }
+  
+  if (c === 'git push') {
+    addXP(15, 'git push ejecutado');
+    return `<span class="output">Enumerating objects: 5, done.
+Counting objects: 100% (5/5), done.
+Writing objects: 100% (3/3), 1.2 KiB | 1.2 MiB/s, done.
+To github.com:andrassaavedra23-hue/learn-github.git</span>
+<span class="success">   abc1234..def5678  main -> main</span>`;
+  }
+  
+  if (c === 'git pull') {
+    addXP(10, 'git pull ejecutado');
+    return `<span class="success">Already up to date.</span>`;
+  }
+  
+  return `<span class="error">'${cmd}' no es reconocido. Escribe 'help' para ver comandos.</span>`;
+}
+
+// ============ MODULE 4: COMMITS ============
+function renderCommits() {
+  document.getElementById('mainContent').innerHTML = `
+    <div class="lesson">
+      <div class="lesson-header">
+        <div class="lesson-emoji">📸</div>
+        <div>
+          <div class="lesson-title">Commits en Acción</div>
+          <div class="lesson-subtitle">Cada commit es una foto de tu proyecto</div>
+        </div>
+      </div>
+
+      <p style="line-height: 1.7; margin-bottom: 20px;">
+        Un <strong>commit</strong> es como tomar una foto de tu proyecto en un momento específico. 
+        Cada foto tiene un <strong>mensaje</strong> que explica qué cambiaste.
+      </p>
+
+      <div class="concept-grid">
+        <div class="concept-card">
+          <div class="concept-icon">✅</div>
+          <div class="concept-name">Buen mensaje</div>
+          <div class="concept-desc mono" style="color:var(--green); font-size:0.8em;">
+            "feat: agregar login con Google"
+          </div>
+        </div>
+        <div class="concept-card">
+          <div class="concept-icon">❌</div>
+          <div class="concept-name">Mal mensaje</div>
+          <div class="concept-desc mono" style="color:var(--red); font-size:0.8em;">
+            "cambios" / "fix" / "asdf"
+          </div>
+        </div>
+      </div>
+
+      <h3 style="margin: 25px 0 15px;">🎮 Crea commits interactivos</h3>
+      <p style="color:var(--text-dim); margin-bottom:15px;">Haz clic en los cambios para crear commits:</p>
+
+      <div id="commitTimeline"></div>
+
+      <div class="btn-group" style="margin-top:20px;">
+        <button class="btn" onclick="createCommit('feat', 'agregar botón de inicio')">
+          ➕ Nueva funcionalidad
+        </button>
+        <button class="btn" onclick="createCommit('fix', 'corregir error en formulario')">
+          🐛 Arreglar bug
+        </button>
+        <button class="btn" onclick="createCommit('docs', 'actualizar README')">
+          📝 Documentación
+        </button>
+        <button class="btn" onclick="createCommit('style', 'mejorar diseño del header')">
+          🎨 Cambios visuales
+        </button>
+      </div>
+
+      <div class="info-box" style="margin-top:20px;">
+        <strong>Convención de Commits:</strong><br>
+        <code>feat:</code> nueva funcionalidad · 
+        <code>fix:</code> corrección de bug · 
+        <code>docs:</code> documentación · 
+        <code>style:</code> formato/estilo · 
+        <code>refactor:</code> reestructuración · 
+        <code>test:</code> pruebas
+      </div>
+
+      <div class="btn-group">
+        <button class="btn btn-primary" onclick="completeModule('commits'); selectModule(4)">
+          Continuar →
+        </button>
+      </div>
+    </div>
+  `;
+  renderTimeline();
+}
+
+function createCommit(type, msg) {
+  const hash = Math.random().toString(16).substr(2, 7);
+  const colors = { feat: 'var(--green)', fix: 'var(--red)', docs: 'var(--blue)', style: 'var(--purple)' };
+  state.gitState.commits.unshift({
+    hash, msg: `${type}: ${msg}`, type, color: colors[type], time: new Date()
+  });
+  addXP(10, `Commit ${type} creado`);
+  renderTimeline();
+}
+
+function renderTimeline() {
+  const tl = document.getElementById('commitTimeline');
+  if (!tl) return;
+  if (state.gitState.commits.length === 0) {
+    tl.innerHTML = '<div class="info-box">Aún no hay commits. ¡Crea el primero arriba! ☝️</div>';
+    return;
+  }
+  tl.innerHTML = state.gitState.commits.map((c, i) => `
+    <div style="display:flex; gap:15px; margin-bottom:15px; align-items:flex-start;">
+      <div style="display:flex; flex-direction:column; align-items:center;">
+        <div style="width:40px; height:40px; border-radius:50%; background:${c.color || 'var(--blue)'}; display:flex; align-items:center; justify-content:center; color:white; font-weight:600;">
+          ${i === 0 ? 'HEAD' : '●'}
+        </div>
+        ${i < state.gitState.commits.length - 1 ? '<div style="width:2px; flex:1; background:var(--border); min-height:30px;"></div>' : ''}
+      </div>
+      <div style="flex:1; background:var(--bg); padding:15px; border-radius:10px; border:1px solid var(--border);">
+        <div class="mono" style="font-size:0.85em; color:var(--text-dim); margin-bottom:5px;">
+          commit <span style="color:var(--orange);">${c.hash}</span> · ${c.time ? c.time.toLocaleTimeString() : 'ahora'}
+        </div>
+        <div style="font-weight:600;">${c.msg}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+// ============ MODULE 5: BRANCHES ============
+function renderBranches() {
+  document.getElementById('mainContent').innerHTML = `
+    <div class="lesson">
+      <div class="lesson-header">
+        <div class="lesson-emoji">🌿</div>
+        <div>
+          <div class="lesson-title">Branches: Líneas paralelas</div>
+          <div class="lesson-subtitle">Experimenta sin miedo a romper nada</div>
+        </div>
+      </div>
+
+      <p style="line-height: 1.7; margin-bottom: 20px;">
+        Un <strong>branch</strong> es como una línea de tiempo alternativa. Puedes crear una 
+        para experimentar, y si todo sale bien, la unes con la principal. Si no, la borras. 
+        ¡Sin consecuencias! 🎉
+      </p>
+
+      <div class="info-box">
+        <strong>🌳 Analogía del árbol:</strong><br>
+        El <code>main</code> es el tronco principal. Los branches son ramas que crecen del tronco. 
+        Puedes podarlas (borrarlas) o unirlas de nuevo (merge).
+      </div>
+
+      <h3 style="margin: 25px 0 15px;">🎮 Crea branches visualmente</h3>
+
+      <div class="btn-group">
+        <button class="btn" onclick="createBranch('feature/login')">🌿 feature/login</button>
+        <button class="btn" onclick="createBranch('feature/dark-mode')">🌿 feature/dark-mode</button>
+        <button class="btn" onclick="createBranch('fix/header-bug')">🐛 fix/header-bug</button>
+        <button class="btn" onclick="mergeBranch()">🔀 Merge a main</button>
+        <button class="btn" onclick="resetBranches()">🔄 Reiniciar</button>
+      </div>
+
+      <div class="branch-viz">
+        <svg class="branch-svg" id="branchSvg" viewBox="0 0 800 250"></svg>
+      </div>
+
+      <div id="branchList" style="margin-top:15px;"></div>
+
+      <div class="warning-box">
+        <strong>⚠️ Regla de oro:</strong> Nunca trabajes directamente en <code>main</code> para 
+        funcionalidades nuevas. Siempre crea un branch primero.
+      </div>
+
+      <div class="quiz" id="quiz2">
+        <div class="quiz-question">
+          🧠 <span>¿Qué comando crea Y cambia a un nuevo branch?</span>
+        </div>
+        <div class="quiz-options">
+          <div class="quiz-option" onclick="answerQuiz('quiz2', this, false)">
+            <div class="quiz-option-letter">A</div>
+            <div class="mono">git branch nuevo</div>
+          </div>
+          <div class="quiz-option" onclick="answerQuiz('quiz2', this, true)">
+            <div class="quiz-option-letter">B</div>
+            <div class="mono">git checkout -b nuevo</div>
+          </div>
+          <div class="quiz-option" onclick="answerQuiz('quiz2', this, false)">
+            <div class="quiz-option-letter">C</div>
+            <div class="mono">git merge nuevo</div>
+          </div>
+        </div>
+        <div class="quiz-feedback" id="quiz2-feedback"></div>
+      </div>
+
+      <div class="btn-group">
+        <button class="btn btn-primary" onclick="completeModule('branches'); selectModule(5)">
+          Continuar →
+        </button>
+      </div>
+    </div>
+  `;
+  state.branchViz = { main: [{x: 50, y: 125}], branches: {} };
+  renderBranchViz();
+}
+
+function createBranch(name) {
+  if (!state.branchViz.branches[name]) {
+    state.branchViz.branches[name] = [{...state.branchViz.main[state.branchViz.main.length - 1]}];
+    addXP(10, `Branch ${name} creado`);
+    showNotification('🌿', 'Branch creado', name);
+  }
+  // Add commit to branch
+  const br = state.branchViz.branches[name];
+  const last = br[br.length - 1];
+  br.push({ x: last.x + 80, y: 180 });
+  renderBranchViz();
+}
+
+function mergeBranch() {
+  const names = Object.keys(state.branchViz.branches);
+  if (names.length === 0) {
+    showNotification('⚠️', 'Sin branches', 'Crea un branch primero');
+    return;
+  }
+  const name = names[0];
+  const br = state.branchViz.branches[name];
+  const last = br[br.length - 1];
+  state.branchViz.main.push({ x: last.x + 80, y: 125, merged: true });
+  delete state.branchViz.branches[name];
+  addXP(20, 'Merge exitoso');
+  showNotification('🔀', 'Merge completado', `${name} → main`);
+  renderBranchViz();
+}
+
+function resetBranches() {
+  state.branchViz = { main: [{x: 50, y: 125}], branches: {} };
+  renderBranchViz();
+}
+
+function renderBranchViz() {
+  const svg = document.getElementById('branchSvg');
+  if (!svg) return;
+  const v = state.branchViz;
+  let html = '';
+  
+  // Main line
+  html += `<line x1="50" y1="125" x2="750" y2="125" stroke="#30363d" stroke-width="2" stroke-dasharray="4"/>`;
+  html += `<text x="10" y="130" fill="#8b949e" font-size="12" font-family="monospace">main</text>`;
+  
+  // Main commits
+  v.main.forEach((c, i) => {
+    const color = c.merged ? '#3fb950' : '#58a6ff';
+    html += `<circle cx="${c.x}" cy="125" r="8" fill="${color}"/>`;
+    if (i === v.main.length - 1) {
+      html += `<text x="${c.x - 10}" y="105" fill="#e6edf3" font-size="10" font-family="monospace">HEAD</text>`;
+    }
+  });
+  
+  // Branches
+  const colors = ['#bc8cff', '#f0883e', '#d29922', '#f85149'];
+  let bi = 0;
+  Object.entries(v.branches).forEach(([name, commits]) => {
+    const color = colors[bi % colors.length];
+    const startY = 125;
+    const endY = 180;
+    
+    // Branch line from main
+    const startCommit = v.main[Math.min(commits[0] ? v.main.length - 1 : 0, v.main.length - 1)];
+    html += `<path d="M ${startCommit.x} 125 Q ${startCommit.x + 40} 150, ${commits[0].x} ${endY}" 
+             stroke="${color}" stroke-width="2" fill="none"/>`;
+    
+    // Branch commits
+    for (let i = 0; i < commits.length; i++) {
+      html += `<circle cx="${commits[i].x}" cy="${endY}" r="6" fill="${color}"/>`;
+    }
+    
+    // Branch line
+    if (commits.length > 1) {
+      html += `<line x1="${commits[0].x}" y1="${endY}" x2="${commits[commits.length-1].x}" y2="${endY}" 
+               stroke="${color}" stroke-width="2"/>`;
+    }
+    
+    // Label
+    html += `<text x="${commits[0].x - 10}" y="${endY + 25}" fill="${color}" font-size="10" font-family="monospace">${name}</text>`;
+    bi++;
+  });
+  
+  svg.innerHTML = html;
+  
+  // Branch list
+  const list = document.getElementById('branchList');
+  if (list) {
+    const branches = ['main', ...Object.keys(v.branches)];
+    list.innerHTML = '<strong style="color:var(--text-dim); font-size:0.85em;">Branches actuales:</strong><br>' +
+      branches.map(b => `<span class="file-chip ${b === 'main' ? 'committed' : 'staged'}">${b === 'main' ? '* ' : ''}${b}</span>`).join('');
+  }
+}
+
+// ============ MODULE 6: GITHUB ============
+function renderGitHub() {
+  document.getElementById('mainContent').innerHTML = `
+    <div class="lesson">
+      <div class="lesson-header">
+        <div class="lesson-emoji">☁️</div>
+        <div>
+          <div class="lesson-title">GitHub & Push</div>
+          <div class="lesson-subtitle">Sube tu código a la nube</div>
+        </div>
+      </div>
+
+      <p style="line-height: 1.7; margin-bottom: 20px;">
+        <strong>GitHub</strong> es donde vive tu código en la nube. <code>git push</code> sube tus 
+        commits, <code>git pull</code> baja los cambios de otros.
+      </p>
+
+      <div class="concept-grid">
+        <div class="concept-card">
+          <div class="concept-icon">⬆️</div>
+          <div class="concept-name">git push</div>
+          <div class="concept-desc">Sube tus commits locales a GitHub</div>
+        </div>
+        <div class="concept-card">
+          <div class="concept-icon">⬇️</div>
+          <div class="concept-name">git pull</div>
+          <div class="concept-desc">Baja los últimos cambios de GitHub</div>
+        </div>
+        <div class="concept-card">
+          <div class="concept-icon">🔀</div>
+          <div class="concept-name">Pull Request</div>
+          <div class="concept-desc">Propuesta para unir un branch a main</div>
+        </div>
+        <div class="concept-card">
+          <div class="concept-icon">👀</div>
+          <div class="concept-name">Code Review</div>
+          <div class="concept-desc">Revisar el código antes de hacer merge</div>
+        </div>
+      </div>
+
+      <h3 style="margin: 25px 0 15px;">🎮 Simula el flujo completo</h3>
+
+      <div id="githubFlow" style="display:flex; flex-direction:column; gap:10px;"></div>
+
+      <div class="btn-group" style="margin-top:20px;">
+        <button class="btn" onclick="githubStep('code')">💻 Escribir código</button>
+        <button class="btn" onclick="githubStep('add')">📦 git add</button>
+        <button class="btn" onclick="githubStep('commit')">📸 git commit</button>
+        <button class="btn" onclick="githubStep('push')">☁️ git push</button>
+        <button class="btn" onclick="resetGithubFlow()">🔄 Reiniciar</button>
+      </div>
+
+      <div class="challenge" style="margin-top:25px;">
+        <div class="challenge-header">🚀 Tu primer proyecto real</div>
+        <ol class="challenge-steps">
+          <li onclick="toggleStep(this)">Crea el repo en github.com/new</li>
+          <li onclick="toggleStep(this)">Clona con <code>git clone URL</code></li>
+          <li onclick="toggleStep(this)">Agrega archivos al proyecto</li>
+          <li onclick="toggleStep(this)">Haz <code>git add .</code></li>
+          <li onclick="toggleStep(this)">Haz <code>git commit -m "mensaje"</code></li>
+          <li onclick="toggleStep(this)">Sube con <code>git push</code></li>
+          <li onclick="toggleStep(this)">¡Verifica en GitHub! 🎉</li>
+        </ol>
+      </div>
+
+      <div class="btn-group">
+        <button class="btn btn-primary" onclick="completeModule('github'); selectModule(6)">
+          Ir al Quiz Final 🏆
+        </button>
+      </div>
+    </div>
+  `;
+  resetGithubFlow();
+}
+
+const githubSteps = {
+  code: { icon: '💻', text: 'Escribiendo código en VS Code...', color: 'var(--blue)' },
+  add: { icon: '📦', text: 'git add . → Archivos en staging', color: 'var(--orange)' },
+  commit: { icon: '📸', text: 'git commit → Cambios guardados localmente', color: 'var(--purple)' },
+  push: { icon: '☁️', text: 'git push → ¡Código en GitHub!', color: 'var(--green)' }
+};
+
+function githubStep(step) {
+  const flow = document.getElementById('githubFlow');
+  const s = githubSteps[step];
+  const div = document.createElement('div');
+  div.style.cssText = `background:var(--bg); border:1px solid ${s.color}; border-left:4px solid ${s.color}; 
+    padding:12px 15px; border-radius:8px; animation:fadeIn 0.3s; display:flex; align-items:center; gap:12px;`;
+  div.innerHTML = `<span style="font-size:1.5em;">${s.icon}</span> <span>${s.text}</span>`;
+  flow.appendChild(div);
+  addXP(8, `${step} ejecutado`);
+  
+  if (step === 'push') {
+    setTimeout(() => {
+      showNotification('🎉', '¡Felicidades!', 'Completaste el flujo de GitHub');
+      addXP(25, 'Flujo completo dominado');
+    }, 500);
+  }
+}
+
+function resetGithubFlow() {
+  document.getElementById('githubFlow').innerHTML = 
+    '<div class="info-box">👆 Usa los botones para simular el flujo completo de Git → GitHub</div>';
+}
+
+// ============ MODULE 7: QUIZ ============
+function renderQuiz() {
+  const questions = [
+    {
+      q: '¿Qué comando ves el estado de tus archivos?',
+      options: ['git status', 'git log', 'git diff', 'git show'],
+      correct: 0
+    },
+    {
+      q: '¿Qué hace "git add ."?',
+      options: ['Sube a GitHub', 'Agrega todos los cambios al staging', 'Crea un commit', 'Crea un branch'],
+      correct: 1
+    },
+    {
+      q: '¿Cuál es el branch principal por defecto?',
+      options: ['master', 'main', 'develop', 'trunk'],
+      correct: 1
+    },
+    {
+      q: '¿Qué comando sube cambios a GitHub?',
+      options: ['git pull', 'git push', 'git upload', 'git send'],
+      correct: 1
+    },
+    {
+      q: '¿Qué es un Pull Request?',
+      options: [
+        'Bajar código de GitHub',
+        'Eliminar un branch',
+        'Propuesta para unir un branch a main',
+        'Un tipo de commit'
+      ],
+      correct: 2
+    }
+  ];
+
+  document.getElementById('mainContent').innerHTML = `
+    <div class="lesson">
+      <div class="lesson-header">
+        <div class="lesson-emoji">🏆</div>
+        <div>
+          <div class="lesson-title">Quiz Final</div>
+          <div class="lesson-subtitle">Demuestra lo que aprendiste</div>
+        </div>
+      </div>
+
+      <div id="quizContainer"></div>
+
+      <div id="quizResult" style="display:none; margin-top:30px;"></div>
+    </div>
+  `;
+
+  const container = document.getElementById('quizContainer');
+  container.innerHTML = questions.map((q, i) => `
+    <div class="quiz" id="fquiz${i}">
+      <div class="quiz-question">
+        ${i + 1}. <span>${q.q}</span>
+      </div>
+      <div class="quiz-options">
+        ${q.options.map((opt, j) => `
+          <div class="quiz-option" onclick="answerFinal(${i}, ${j}, ${j === q.correct})">
+            <div class="quiz-option-letter">${String.fromCharCode(65 + j)}</div>
+            <div>${opt}</div>
+          </div>
+        `).join('')}
+      </div>
+      <div class="quiz-feedback" id="fquiz${i}-feedback"></div>
+    </div>
+  `).join('');
+
+  window.quizAnswers = {};
+  window.quizTotal = questions.length;
+}
+
+function answerFinal(qi, oi, correct) {
+  if (window.quizAnswers[qi] !== undefined) return;
+  window.quizAnswers[qi] = correct;
+  
+  const quiz = document.getElementById(`fquiz${qi}`);
+  const options = quiz.querySelectorAll('.quiz-option');
+  options[oi].classList.add(correct ? 'correct' : 'wrong');
+  
+  const fb = document.getElementById(`fquiz${qi}-feedback`);
+  fb.className = `quiz-feedback show ${correct ? 'correct' : 'wrong'}`;
+  fb.innerHTML = correct 
+    ? '✅ ¡Correcto! +20 XP' 
+    : '❌ Incorrecto. Revisa el módulo correspondiente.';
+  
+  if (correct) addXP(20, 'Respuesta correcta');
+  
+  // Check if all answered
+  if (Object.keys(window.quizAnswers).length === window.quizTotal) {
+    showFinalResult();
+  }
+}
+
+function showFinalResult() {
+  const correct = Object.values(window.quizAnswers).filter(x => x).length;
+  const total = window.quizTotal;
+  const pct = Math.round((correct / total) * 100);
+  
+  const result = document.getElementById('quizResult');
+  result.style.display = 'block';
+  
+  let msg, emoji;
+  if (pct === 100) { msg = '¡Perfecto! Dominas los fundamentos de Git'; emoji = '🏆'; }
+  else if (pct >= 80) { msg = '¡Excelente! Casi perfecto'; emoji = '🌟'; }
+  else if (pct >= 60) { msg = '¡Bien! Sigue practicando'; emoji = '👍'; }
+  else { msg = 'Repasa los módulos anteriores'; emoji = '📚'; }
+  
+  result.innerHTML = `
+    <div style="background:linear-gradient(135deg, rgba(63,185,80,0.1), rgba(88,166,255,0.1)); 
+                border:2px solid var(--green); border-radius:16px; padding:30px; text-align:center;">
+      <div style="font-size:4em; margin-bottom:10px;">${emoji}</div>
+      <h2 style="margin-bottom:10px;">${correct}/${total} correctas</h2>
+      <p style="color:var(--text-dim); margin-bottom:20px;">${msg}</p>
+      <div style="font-size:2em; font-weight:700; background:linear-gradient(90deg, var(--green), var(--blue)); 
+                  -webkit-background-clip:text; -webkit-text-fill-color:transparent;">
+        ${pct}%
+      </div>
+      <div style="margin-top:20px; font-size:1.2em;">
+        XP Total: <strong>${state.xp}</strong> ⭐
+      </div>
+      <div class="btn-group" style="justify-content:center; margin-top:25px;">
+        <button class="btn btn-primary" onclick="selectModule(0)">🔄 Empezar de nuevo</button>
+        <button class="btn" onclick="window.open('https://github.com/andrassaavedra23-hue/learn-github', '_blank')">
+          🚀 Ir a mi repositorio
+        </button>
+      </div>
+    </div>
+  `;
+  
+  completeModule('quiz');
+  result.scrollIntoView({ behavior: 'smooth' });
+}
+
+// ============ QUIZ HELPER ============
+function answerQuiz(id, el, correct) {
+  const quiz = document.getElementById(id);
+  if (quiz.dataset.answered) return;
+  quiz.dataset.answered = 'true';
+  
+  const options = quiz.querySelectorAll('.quiz-option');
+  options.forEach(o => o.style.pointerEvents = 'none');
+  
+  el.classList.add(correct ? 'correct' : 'wrong');
+  if (!correct) {
+    options.forEach(o => {
+      if (o.onclick.toString().includes('true')) o.classList.add('correct');
+    });
+  }
+  
+  const fb = document.getElementById(`${id}-feedback`);
+  fb.className = `quiz-feedback show ${correct ? 'correct' : 'wrong'}`;
+  fb.innerHTML = correct 
+    ? '✅ ¡Correcto! +15 XP' 
+    : '❌ Incorrecto. La respuesta correcta está marcada en verde.';
+  
+  if (correct) addXP(15, 'Quiz respondido correctamente');
+}
+
+// ============ INIT ============
+renderSidebar();
+renderIntro();
+updateProgress();
+</script>
+
+</body>
+</html>
+
+>>>>>>> 38eddb4d39d07cf4544e16fbaedff7e92470f4b3
