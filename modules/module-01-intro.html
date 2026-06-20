@@ -9,7 +9,59 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/jetbrains-mono@5.0.0/index.css">
 <style>
 /* Estilos específicos del Módulo 1 */
-.concept-card.explored { border-color: var(--green); background: rgba(63,185,80,0.05); }
+.concept-card.explored { 
+  border-color: var(--green); 
+  background: rgba(63,185,80,0.05);
+  cursor: default;
+}
+.concept-card.explored:hover {
+  transform: none;
+  box-shadow: none;
+}
+
+/* Panel de información del concepto */
+.concept-detail {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 25px;
+  margin-top: 20px;
+  display: none;
+  animation: fadeIn 0.4s ease;
+}
+.concept-detail.show { display: block; }
+.concept-detail-header {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 15px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid var(--border);
+}
+.concept-detail-icon { font-size: 2.5em; }
+.concept-detail-title { font-size: 1.3em; font-weight: 700; }
+.concept-detail-body { line-height: 1.7; color: var(--text-dim); }
+.concept-detail-body strong { color: var(--text); }
+.concept-example {
+  background: var(--bg-3);
+  border-left: 3px solid var(--blue);
+  padding: 12px 16px;
+  border-radius: 6px;
+  margin: 15px 0;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.9em;
+  color: var(--text);
+}
+.concept-tag {
+  display: inline-block;
+  background: rgba(88,166,255,0.15);
+  color: var(--blue);
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 0.8em;
+  margin: 3px;
+  font-weight: 600;
+}
 </style>
 </head>
 <body>
@@ -41,48 +93,69 @@
     </div>
 
     <div class="content">
-      <p>Imagina que estás escribiendo un libro. Cada capítulo que terminas, lo guardas como <code>capitulo-1.doc</code>, luego <code>capitulo-1-final.doc</code>... 😵</p>
-      <p><strong>Git</strong> resuelve esto. Es una máquina del tiempo para tu código.</p>
+      <p>Imagina que estás escribiendo un libro. Cada capítulo que terminas, lo guardas como <code>capitulo-1.doc</code>, luego <code>capitulo-1-final.doc</code>, luego <code>capitulo-1-final-final.doc</code>... 😵</p>
+      <p><strong>Git</strong> resuelve esto. Es una máquina del tiempo para tu código: guarda "fotos" de tu proyecto y te permite volver atrás si algo sale mal.</p>
 
       <div class="info-box">
         <strong>💡 Analogía simple:</strong><br>
-        Git = Tu álbum de fotos (guarda versiones)<br>
+        Git = Tu álbum de fotos (guarda versiones en tu PC)<br>
         GitHub = Instagram (comparte tus fotos con el mundo)
       </div>
 
-      <h3 style="margin: 25px 0 15px;">🎮 Explora los conceptos</h3>
+      <h3 style="margin: 25px 0 10px;"> Explora los conceptos</h3>
+      <p style="color: var(--text-dim); font-size: 0.9em; margin-bottom: 15px;">Haz clic en cada tarjeta para ver información detallada:</p>
+
       <div class="concept-grid">
         <div class="concept-card" onclick="exploreConcept(this, 'git')">
-          <div class="concept-icon">⚡</div><div class="concept-name">Git</div>
+          <div class="concept-icon"></div>
+          <div class="concept-name">Git</div>
           <div class="concept-desc">Sistema que guarda el historial de cambios localmente.</div>
         </div>
         <div class="concept-card" onclick="exploreConcept(this, 'github')">
-          <div class="concept-icon">☁️</div><div class="concept-name">GitHub</div>
+          <div class="concept-icon">☁️</div>
+          <div class="concept-name">GitHub</div>
           <div class="concept-desc">La nube donde se guardan y comparten tus proyectos.</div>
         </div>
         <div class="concept-card" onclick="exploreConcept(this, 'repo')">
-          <div class="concept-icon">📁</div><div class="concept-name">Repositorio</div>
+          <div class="concept-icon">📁</div>
+          <div class="concept-name">Repositorio</div>
           <div class="concept-desc">Una carpeta de proyecto rastreada por Git.</div>
         </div>
         <div class="concept-card" onclick="exploreConcept(this, 'commit')">
-          <div class="concept-icon"></div><div class="concept-name">Commit</div>
+          <div class="concept-icon"></div>
+          <div class="concept-name">Commit</div>
           <div class="concept-desc">Una "foto" del estado de tu proyecto en un momento dado.</div>
         </div>
+      </div>
+
+      <!-- Panel de información detallada -->
+      <div class="concept-detail" id="conceptDetail">
+        <div class="concept-detail-header">
+          <div class="concept-detail-icon" id="detailIcon"></div>
+          <div class="concept-detail-title" id="detailTitle"></div>
+        </div>
+        <div class="concept-detail-body" id="detailBody"></div>
       </div>
 
       <div class="quiz" id="quiz1">
         <div class="quiz-question"> <span>¿Cuál es la diferencia principal entre Git y GitHub?</span></div>
         <div class="quiz-options">
-          <div class="quiz-option" onclick="answerQuiz('quiz1', this, false)"><div class="quiz-option-letter">A</div><div>Son lo mismo</div></div>
-          <div class="quiz-option" onclick="answerQuiz('quiz1', this, true)"><div class="quiz-option-letter">B</div><div>Git es local, GitHub es la nube</div></div>
-          <div class="quiz-option" onclick="answerQuiz('quiz1', this, false)"><div class="quiz-option-letter">C</div><div>GitHub es más nuevo</div></div>
+          <div class="quiz-option" onclick="answerQuiz('quiz1', this, false)">
+            <div class="quiz-option-letter">A</div><div>Son lo mismo, solo tienen nombres diferentes</div>
+          </div>
+          <div class="quiz-option" onclick="answerQuiz('quiz1', this, true)">
+            <div class="quiz-option-letter">B</div><div>Git es el sistema local, GitHub es la plataforma en la nube</div>
+          </div>
+          <div class="quiz-option" onclick="answerQuiz('quiz1', this, false)">
+            <div class="quiz-option-letter">C</div><div>GitHub es más nuevo que Git</div>
+          </div>
         </div>
         <div class="quiz-feedback" id="quiz1-feedback"></div>
       </div>
 
       <div class="nav-buttons">
         <button class="btn" disabled>← Anterior</button>
-        <button class="btn btn-primary" onclick="completeModule()">Completar módulo →</button>
+        <button class="btn btn-primary" id="btnFinish" onclick="finishModule()">Completar módulo →</button>
       </div>
     </div>
   </div>
@@ -94,20 +167,143 @@
 <script src="../js/progress.js"></script>
 <script src="../js/common.js"></script>
 <script>
-// Lógica específica del Módulo 1
+// ============ MÓDULO 1: INTRO ============
 const MODULE_ID = 'intro';
 let moduleXp = 0;
 let exploredCount = 0;
 let quizDone = false;
 
-function exploreConcept(el, concept) {
-  if (el.classList.contains('explored')) return;
+// Base de datos de conceptos
+const CONCEPTS = {
+  git: {
+    icon: '⚡',
+    title: 'Git - Control de Versiones',
+    body: `
+      <p><strong>Git</strong> fue creado por <strong>Linus Torvalds</strong> en 2005 (el mismo creador de Linux). Es un sistema que guarda cada cambio que haces en tu código.</p>
+      <div class="concept-example">
+        $ git init<br>
+        $ git add .<br>
+        $ git commit -m "mi primer cambio"
+      </div>
+      <p><strong>Características clave:</strong></p>
+      <p>✅ Funciona <strong>sin internet</strong> (todo es local)<br>
+         ✅ Es <strong>gratis y open source</strong><br>
+         ✅ Guarda el <strong>historial completo</strong> de cambios<br>
+         ✅ Permite <strong>volver atrás</strong> si algo sale mal</p>
+      <div>
+        <span class="concept-tag">Local</span>
+        <span class="concept-tag">Gratis</span>
+        <span class="concept-tag">Open Source</span>
+      </div>
+    `
+  },
+  github: {
+    icon: '☁️',
+    title: 'GitHub - Plataforma en la Nube',
+    body: `
+      <p><strong>GitHub</strong> fue fundado en 2008 y comprado por Microsoft en 2018 por $7.5 mil millones. Es donde alojas tus repositorios de Git en la nube.</p>
+      <div class="concept-example">
+        $ git remote add origin https://github.com/usuario/repo.git<br>
+        $ git push -u origin main
+      </div>
+      <p><strong>¿Para qué sirve?</strong></p>
+      <p>🌐 <strong>Colaborar</strong> con otros desarrolladores<br>
+         👀 <strong>Code review</strong> antes de hacer merge<br>
+         🚀 <strong>Deploy</strong> automático con GitHub Actions<br>
+         📄 <strong>Portfolio</strong> para reclutadores</p>
+      <div>
+        <span class="concept-tag">Nube</span>
+        <span class="concept-tag">Colaboración</span>
+        <span class="concept-tag">Portfolio</span>
+      </div>
+    `
+  },
+  repo: {
+    icon: '📁',
+    title: 'Repositorio - Tu Proyecto',
+    body: `
+      <p>Un <strong>repositorio</strong> (o "repo") es una carpeta especial donde Git rastrea todos los cambios. Puede vivir en tu computadora o en GitHub.</p>
+      <div class="concept-example">
+        # Crear repo local<br>
+        $ mkdir mi-proyecto<br>
+        $ cd mi-proyecto<br>
+        $ git init<br><br>
+        # Clonar repo de GitHub<br>
+        $ git clone https://github.com/usuario/repo.git
+      </div>
+      <p><strong>Estructura típica:</strong></p>
+      <p>📂 mi-proyecto/<br>
+         &nbsp;&nbsp;├── 📄 README.md<br>
+         &nbsp;&nbsp;├── 📂 src/<br>
+         &nbsp;&nbsp;├── 📂 .git/ (invisible, aquí vive Git)<br>
+         &nbsp;&nbsp;└──  .gitignore</p>
+      <div>
+        <span class="concept-tag">Carpeta</span>
+        <span class="concept-tag">Historial</span>
+        <span class="concept-tag">Versiones</span>
+      </div>
+    `
+  },
+  commit: {
+    icon: '📸',
+    title: 'Commit - Una Foto del Código',
+    body: `
+      <p>Un <strong>commit</strong> es como tomar una foto de tu proyecto en un momento específico. Cada commit tiene un <strong>mensaje</strong> que describe qué cambiaste.</p>
+      <div class="concept-example">
+        $ git add index.html<br>
+        $ git commit -m "feat: agregar botón de inicio"<br><br>
+        # Ver historial de commits<br>
+        $ git log --oneline
+      </div>
+      <p><strong>Buenas prácticas de mensajes:</strong></p>
+      <p>✅ <code>feat:</code> nueva funcionalidad<br>
+         ✅ <code>fix:</code> corrección de bug<br>
+         ✅ <code>docs:</code> cambios en documentación<br>
+         ❌ <code>"cambios"</code> (muy vago)<br>
+         ❌ <code>"asdf"</code> (sin sentido)</p>
+      <div>
+        <span class="concept-tag">Snapshot</span>
+        <span class="concept-tag">Historial</span>
+        <span class="concept-tag">Mensajes</span>
+      </div>
+    `
+  }
+};
+
+function exploreConcept(el, conceptKey) {
+  // Si ya fue explorado, no hacer nada (evita sumar XP duplicado)
+  if (el.classList.contains('explored')) {
+    // Pero sí mostrar la info de nuevo si hace clic
+    showConceptDetail(conceptKey);
+    return;
+  }
+  
   el.classList.add('explored');
   exploredCount++;
   moduleXp += 5;
-  updateXP();
+  document.getElementById('xpCount').textContent = moduleXp;
+  showNotification('⭐', `+5 XP - Concepto explorado`);
+  
+  // Mostrar información detallada
+  showConceptDetail(conceptKey);
   updateProgress();
-  showNotification('', `+5 XP - Concepto explorado`);
+  
+  console.log(`[Módulo 1] Concepto explorado: ${conceptKey} | Total: ${exploredCount}/4`);
+}
+
+function showConceptDetail(key) {
+  const data = CONCEPTS[key];
+  if (!data) return;
+  
+  document.getElementById('detailIcon').textContent = data.icon;
+  document.getElementById('detailTitle').textContent = data.title;
+  document.getElementById('detailBody').innerHTML = data.body;
+  
+  const detail = document.getElementById('conceptDetail');
+  detail.classList.add('show');
+  
+  // Scroll suave al panel
+  detail.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 }
 
 function updateProgress() {
@@ -116,10 +312,8 @@ function updateProgress() {
   const pct = Math.round((current / total) * 100);
   document.getElementById('moduleProgress').style.width = pct + '%';
   document.getElementById('progressText').textContent = pct + '%';
-}
-
-function updateXP() {
-  document.getElementById('xpCount').textContent = moduleXp;
+  
+  console.log(`[Módulo 1] Progreso: ${pct}%`);
 }
 
 // Sobrescribimos answerQuiz para este módulo
@@ -134,31 +328,55 @@ answerQuiz = function(quizId, el, isCorrect) {
   if (isCorrect) {
     el.classList.add('correct');
     moduleXp += 15;
-    updateXP();
+    document.getElementById('xpCount').textContent = moduleXp;
     showNotification('⭐', '+15 XP - Quiz correcto');
   } else {
     el.classList.add('wrong');
     options[1].classList.add('correct'); // Mostrar la correcta (B)
+    showNotification('❌', 'Incorrecto. La respuesta correcta es B');
   }
   updateProgress();
-}
+  
+  console.log(`[Módulo 1] Quiz respondido: ${isCorrect ? 'correcto' : 'incorrecto'}`);
+};
 
-function completeModule() {
+// ⚠️ IMPORTANTE: Nombre diferente para evitar conflicto con progress.js
+function finishModule() {
+  console.log('[Módulo 1] Botón completar clickeado');
+  
   const progressText = document.getElementById('progressText').textContent;
-  if (parseInt(progressText) < 100) { 
-    showNotification('⚠️', 'Completa todas las actividades primero', true); 
+  const progress = parseInt(progressText);
+  
+  console.log(`[Módulo 1] Progreso actual: ${progress}%`);
+  
+  if (progress < 100) { 
+    showNotification('️', `Completa todas las actividades (${progress}/100%)`, true); 
     return; 
   }
-  completeModule(MODULE_ID, moduleXp + 50);
-  showNotification('🎉', '¡Módulo completado! +50 XP bonus');
-  setTimeout(() => window.location.href = '../dashboard.html', 1500);
+  
+  console.log(`[Módulo 1] Guardando progreso: ${moduleXp + 50} XP`);
+  
+  // Llamar a la función de progress.js (renombrada para evitar conflicto)
+  const saved = completeModule(MODULE_ID, moduleXp + 50);
+  console.log(`[Módulo 1] Progreso guardado: ${saved}`);
+  
+  showNotification('', '¡Módulo completado! +50 XP bonus');
+  
+  setTimeout(() => {
+    window.location.href = '../dashboard.html';
+  }, 1500);
 }
 
 // Init
 const session = getSession();
 if (session) {
   const user = getCurrentUser();
-  if (user) document.getElementById('xpCount').textContent = user.xp || 0;
+  if (user) {
+    document.getElementById('xpCount').textContent = user.xp || 0;
+    console.log(`[Módulo 1] Usuario cargado: ${user.name} | XP: ${user.xp}`);
+  }
+} else {
+  console.log('[Módulo 1] No hay sesión activa');
 }
 </script>
 </body>
