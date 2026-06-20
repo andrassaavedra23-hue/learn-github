@@ -4,24 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Módulo 6: GitHub & Push</title>
+<link rel="stylesheet" href="../css/style.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/inter@5.0.0/index.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/jetbrains-mono@5.0.0/index.css">
 <style>
-* { margin: 0; padding: 0; box-sizing: border-box; }
-:root { --bg: #0d1117; --bg-2: #161b22; --bg-3: #21262d; --border: #30363d; --text: #e6edf3; --text-dim: #8b949e; --green: #3fb950; --blue: #58a6ff; --purple: #bc8cff; --orange: #f0883e; --red: #f85149; }
-body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
-nav { background: var(--bg-2); border-bottom: 1px solid var(--border); padding: 15px 40px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
-.nav-left { display: flex; align-items: center; gap: 20px; }
-.btn-back { background: var(--bg-3); color: var(--text); border: 1px solid var(--border); padding: 8px 14px; border-radius: 8px; cursor: pointer; font-family: inherit; }
-.xp-badge { background: linear-gradient(135deg, var(--purple), var(--blue)); padding: 6px 14px; border-radius: 20px; font-weight: 600; font-size: 0.85em; }
-.module-progress { background: var(--bg-2); border-bottom: 1px solid var(--border); padding: 12px 40px; }
-.progress-content { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; gap: 15px; }
-.progress-track { flex: 1; height: 6px; background: var(--bg-3); border-radius: 10px; overflow: hidden; }
-.progress-fill { height: 100%; background: linear-gradient(90deg, var(--green), var(--blue)); width: 0%; transition: width 0.5s; border-radius: 10px; }
-.container { max-width: 900px; margin: 0 auto; padding: 40px; }
-.lesson { background: var(--bg-2); border: 1px solid var(--border); border-radius: 16px; padding: 35px; }
-.lesson-header { display: flex; align-items: center; gap: 15px; margin-bottom: 25px; padding-bottom: 20px; border-bottom: 1px solid var(--border); }
-.lesson-emoji { font-size: 2.5em; background: var(--bg-3); width: 70px; height: 70px; border-radius: 16px; display: flex; align-items: center; justify-content: center; }
 .github-flow { display: flex; flex-direction: column; gap: 10px; margin: 20px 0; }
 .flow-step { background: var(--bg); border: 1px solid var(--border); border-left: 4px solid var(--border); padding: 15px; border-radius: 8px; display: flex; align-items: center; gap: 12px; transition: all 0.3s; }
 .flow-step.active { border-left-color: var(--green); background: rgba(63,185,80,0.05); }
@@ -30,27 +16,10 @@ nav { background: var(--bg-2); border-bottom: 1px solid var(--border); padding: 
 .flow-controls { display: flex; gap: 10px; flex-wrap: wrap; margin: 20px 0; }
 .btn-action { background: var(--bg-3); color: var(--text); border: 1px solid var(--border); padding: 10px 18px; border-radius: 8px; cursor: pointer; font-family: inherit; font-weight: 500; transition: all 0.2s; }
 .btn-action:hover { background: var(--border); transform: translateY(-2px); }
-.quiz { background: linear-gradient(135deg, rgba(188,140,255,0.05), rgba(88,166,255,0.05)); border: 1px solid var(--purple); border-radius: 12px; padding: 25px; margin: 25px 0; }
-.quiz-options { display: flex; flex-direction: column; gap: 10px; margin-top: 15px; }
-.quiz-option { background: var(--bg); border: 2px solid var(--border); padding: 12px 18px; border-radius: 8px; cursor: pointer; transition: all 0.2s; }
-.quiz-option:hover { border-color: var(--blue); }
-.quiz-option.correct { border-color: var(--green); background: rgba(63,185,80,0.1); }
-.quiz-option.wrong { border-color: var(--red); background: rgba(248,81,73,0.1); }
-.nav-buttons { display: flex; justify-content: space-between; margin-top: 30px; }
-.btn { background: var(--bg-3); color: var(--text); border: 1px solid var(--border); padding: 12px 24px; border-radius: 10px; cursor: pointer; font-family: inherit; }
-.btn-primary { background: linear-gradient(135deg, var(--green), #2ea043); border-color: var(--green); color: white; }
-.notification { position: fixed; top: 100px; right: 30px; background: var(--bg-2); border: 1px solid var(--green); border-left: 4px solid var(--green); padding: 15px 20px; border-radius: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.4); transform: translateX(400px); transition: transform 0.4s; z-index: 1000; }
-.notification.show { transform: translateX(0); }
-.info-box { background: rgba(88,166,255,0.08); border-left: 3px solid var(--blue); padding: 15px 20px; border-radius: 8px; margin: 20px 0; font-size: 0.95em; line-height: 1.6; }
-.concept-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin: 25px 0; }
-.concept-card { background: var(--bg); border: 1px solid var(--border); border-radius: 12px; padding: 20px; transition: all 0.3s; cursor: pointer; }
-.concept-card:hover { transform: translateY(-3px); border-color: var(--blue); }
-.concept-icon { font-size: 2em; margin-bottom: 10px; }
-.concept-name { font-weight: 600; margin-bottom: 6px; }
-.concept-desc { font-size: 0.85em; color: var(--text-dim); line-height: 1.5; }
 </style>
 </head>
 <body>
+
 <nav>
   <div class="nav-left">
     <button class="btn-back" onclick="window.location.href='../dashboard.html'">← Volver</button>
@@ -58,11 +27,12 @@ nav { background: var(--bg-2); border-bottom: 1px solid var(--border); padding: 
   </div>
   <div class="xp-badge">⭐ <span id="xpCount">0</span> XP</div>
 </nav>
+
 <div class="module-progress">
   <div class="progress-content">
-    <span>Progreso</span>
+    <span class="progress-label">Progreso</span>
     <div class="progress-track"><div class="progress-fill" id="moduleProgress"></div></div>
-    <span id="progressText">0%</span>
+    <span class="progress-text" id="progressText">0%</span>
   </div>
 </div>
 
@@ -71,36 +41,18 @@ nav { background: var(--bg-2); border-bottom: 1px solid var(--border); padding: 
     <div class="lesson-header">
       <div class="lesson-emoji">☁️</div>
       <div>
-        <div style="font-size: 1.8em; font-weight: 700;">GitHub & Push</div>
-        <div style="color: var(--text-dim);">Sube tu código a la nube</div>
+        <div class="lesson-title">GitHub & Push</div>
+        <div class="lesson-subtitle">Sube tu código a la nube</div>
       </div>
     </div>
 
-    <p style="line-height: 1.7; margin-bottom: 20px;">
-      <strong>GitHub</strong> es donde vive tu código en la nube. <code style="background:var(--bg-3);padding:2px 6px;border-radius:4px;color:var(--orange);">git push</code> sube tus commits, <code style="background:var(--bg-3);padding:2px 6px;border-radius:4px;color:var(--orange);">git pull</code> baja los cambios.
-    </p>
+    <p style="line-height: 1.7; margin-bottom: 20px;"><strong>GitHub</strong> es donde vive tu código en la nube. <code>git push</code> sube tus commits, <code>git pull</code> baja los cambios.</p>
 
     <div class="concept-grid">
-      <div class="concept-card">
-        <div class="concept-icon">⬆️</div>
-        <div class="concept-name">git push</div>
-        <div class="concept-desc">Sube tus commits locales a GitHub</div>
-      </div>
-      <div class="concept-card">
-        <div class="concept-icon">⬇️</div>
-        <div class="concept-name">git pull</div>
-        <div class="concept-desc">Baja los últimos cambios de GitHub</div>
-      </div>
-      <div class="concept-card">
-        <div class="concept-icon"></div>
-        <div class="concept-name">Pull Request</div>
-        <div class="concept-desc">Propuesta para unir un branch a main</div>
-      </div>
-      <div class="concept-card">
-        <div class="concept-icon">👀</div>
-        <div class="concept-name">Code Review</div>
-        <div class="concept-desc">Revisar el código antes de hacer merge</div>
-      </div>
+      <div class="concept-card"><div class="concept-icon">⬆️</div><div class="concept-name">git push</div><div class="concept-desc">Sube tus commits locales a GitHub</div></div>
+      <div class="concept-card"><div class="concept-icon">️</div><div class="concept-name">git pull</div><div class="concept-desc">Baja los últimos cambios de GitHub</div></div>
+      <div class="concept-card"><div class="concept-icon"></div><div class="concept-name">Pull Request</div><div class="concept-desc">Propuesta para unir un branch a main</div></div>
+      <div class="concept-card"><div class="concept-icon">👀</div><div class="concept-name">Code Review</div><div class="concept-desc">Revisar el código antes de hacer merge</div></div>
     </div>
 
     <h3 style="margin: 25px 0 15px;">🎮 Simula el flujo completo</h3>
@@ -118,12 +70,13 @@ nav { background: var(--bg-2); border-bottom: 1px solid var(--border); padding: 
     </div>
 
     <div class="quiz" id="quiz1">
-      <div style="font-weight: 600; margin-bottom: 10px;">🧠 ¿Qué comando sube cambios a GitHub?</div>
+      <div class="quiz-question">🧠 <span>¿Qué comando sube cambios a GitHub?</span></div>
       <div class="quiz-options">
-        <div class="quiz-option" onclick="answerQuiz(this, false)">git pull</div>
-        <div class="quiz-option" onclick="answerQuiz(this, true)">git push</div>
-        <div class="quiz-option" onclick="answerQuiz(this, false)">git upload</div>
+        <div class="quiz-option" onclick="answerQuiz('quiz1', this, false)"><div class="quiz-option-letter">A</div><div>git pull</div></div>
+        <div class="quiz-option" onclick="answerQuiz('quiz1', this, true)"><div class="quiz-option-letter">B</div><div>git push</div></div>
+        <div class="quiz-option" onclick="answerQuiz('quiz1', this, false)"><div class="quiz-option-letter">C</div><div>git upload</div></div>
       </div>
+      <div class="quiz-feedback" id="quiz1-feedback"></div>
     </div>
 
     <div class="nav-buttons">
@@ -133,11 +86,14 @@ nav { background: var(--bg-2); border-bottom: 1px solid var(--border); padding: 
   </div>
 </div>
 
-<div class="notification" id="notification"><span id="notifText"></span></div>
+<div class="notification" id="notification"><span id="notifIcon">✓</span><span id="notifText"></span></div>
 
+<script src="../js/auth.js"></script>
+<script src="../js/progress.js"></script>
+<script src="../js/common.js"></script>
 <script>
 const MODULE_ID = 'github';
-let xp = 0, progress = 0, flowSteps = [], quizDone = false;
+let moduleXp = 0, flowSteps = [], quizDone = false;
 const STEPS = {
   code: { icon: '💻', text: 'Escribiendo código en VS Code...', color: 'var(--blue)' },
   add: { icon: '📦', text: 'git add . → Archivos en staging', color: 'var(--orange)' },
@@ -146,7 +102,7 @@ const STEPS = {
 };
 
 function githubStep(step) {
-  if (flowSteps.includes(step)) { showNotification('Este paso ya lo hiciste'); return; }
+  if (flowSteps.includes(step)) { showNotification('⚠️', 'Este paso ya lo hiciste'); return; }
   flowSteps.push(step);
   const s = STEPS[step];
   const flow = document.getElementById('githubFlow');
@@ -156,10 +112,16 @@ function githubStep(step) {
   div.className = 'flow-step active';
   div.innerHTML = `<span class="flow-step-icon">${s.icon}</span><span class="flow-step-text">${s.text}</span>`;
   flow.appendChild(div);
-  addXP(8, `${step} ejecutado`);
+  moduleXp += 8;
+  document.getElementById('xpCount').textContent = moduleXp;
+  showNotification('⭐', `+8 XP - ${step} ejecutado`);
   
   if (step === 'push') {
-    setTimeout(() => { showNotification('¡Flujo completo! +25 XP bonus'); addXP(25, 'Flujo completo'); }, 500);
+    setTimeout(() => { 
+      moduleXp += 25;
+      document.getElementById('xpCount').textContent = moduleXp;
+      showNotification('🎉', '+25 XP - ¡Flujo completo!'); 
+    }, 500);
   }
   checkProgress();
 }
@@ -170,62 +132,56 @@ function resetGithubFlow() {
   updateProgress();
 }
 
-function answerQuiz(el, correct) {
-  if (quizDone) return;
-  quizDone = true;
-  el.classList.add(correct ? 'correct' : 'wrong');
-  if (correct) addXP(15, 'Quiz correcto');
-  updateProgress();
-}
-
 function checkProgress() {
   if (flowSteps.length === 4 && !flowSteps._bonus) {
     flowSteps._bonus = true;
-    addXP(25, 'Flujo completo dominado');
+    moduleXp += 25;
+    document.getElementById('xpCount').textContent = moduleXp;
+    showNotification('⭐', '+25 XP - Flujo completo dominado');
   }
   updateProgress();
-}
-
-function addXP(amount, reason) {
-  xp += amount;
-  document.getElementById('xpCount').textContent = xp;
-  showNotification(`+${amount} XP - ${reason}`);
 }
 
 function updateProgress() {
   const flowProgress = Math.min(100, (flowSteps.length / 4) * 100);
-  progress = Math.round((flowProgress * 0.7) + (quizDone ? 30 : 0));
+  const progress = Math.round((flowProgress * 0.7) + (quizDone ? 30 : 0));
   document.getElementById('moduleProgress').style.width = progress + '%';
   document.getElementById('progressText').textContent = progress + '%';
 }
 
-function completeModule() {
-  if (progress < 90) { showNotification('Completa el flujo y el quiz'); return; }
-  const users = JSON.parse(localStorage.getItem('learngithub_users') || '{}');
-  const session = JSON.parse(localStorage.getItem('learngithub_session'));
-  if (session && users[session.email]) {
-    users[session.email].xp = (users[session.email].xp || 0) + xp + 50;
-    if (!users[session.email].completedModules) users[session.email].completedModules = [];
-    if (!users[session.email].completedModules.includes(MODULE_ID)) users[session.email].completedModules.push(MODULE_ID);
-    users[session.email].lastModule = MODULE_ID;
-    localStorage.setItem('learngithub_users', JSON.stringify(users));
+const originalAnswerQuiz = answerQuiz;
+answerQuiz = function(quizId, el, isCorrect) {
+  if (quizDone) return;
+  quizDone = true;
+  const quiz = document.getElementById(quizId);
+  const options = quiz.querySelectorAll('.quiz-option');
+  options.forEach(o => o.style.pointerEvents = 'none');
+  
+  if (isCorrect) {
+    el.classList.add('correct');
+    moduleXp += 15;
+    document.getElementById('xpCount').textContent = moduleXp;
+    showNotification('⭐', '+15 XP - Quiz correcto');
+  } else {
+    el.classList.add('wrong');
+    options[1].classList.add('correct');
   }
-  showNotification('¡Módulo completado! +50 XP bonus');
+  updateProgress();
+}
+
+function completeModule() {
+  const progressText = document.getElementById('progressText').textContent;
+  if (parseInt(progressText) < 90) { showNotification('⚠️', 'Completa el flujo y el quiz', true); return; }
+  completeModule(MODULE_ID, moduleXp + 50);
+  showNotification('🎉', '¡Módulo completado! +50 XP bonus');
   setTimeout(() => window.location.href = 'module-07-quiz.html', 1500);
 }
 
-function showNotification(text) {
-  const n = document.getElementById('notification');
-  document.getElementById('notifText').textContent = text;
-  n.classList.add('show');
-  setTimeout(() => n.classList.remove('show'), 2500);
-}
-
-const session = JSON.parse(localStorage.getItem('learngithub_session'));
+const session = getSession();
 if (session) {
-  const users = JSON.parse(localStorage.getItem('learngithub_users') || '{}');
-  if (users[session.email]) document.getElementById('xpCount').textContent = users[session.email].xp || 0;
+  const user = getCurrentUser();
+  if (user) document.getElementById('xpCount').textContent = user.xp || 0;
 }
 </script>
 </body>
-</html><!-- TODO: contenido -->
+</html>

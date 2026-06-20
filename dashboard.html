@@ -4,92 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Dashboard - Learn GitHub</title>
+<link rel="stylesheet" href="css/style.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/inter@5.0.0/index.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/jetbrains-mono@5.0.0/index.css">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <style>
-* { margin: 0; padding: 0; box-sizing: border-box; }
-:root {
-  --bg: #0d1117;
-  --bg-2: #161b22;
-  --bg-3: #21262d;
-  --border: #30363d;
-  --text: #e6edf3;
-  --text-dim: #8b949e;
-  --green: #3fb950;
-  --blue: #58a6ff;
-  --purple: #bc8cff;
-  --orange: #f0883e;
-  --red: #f85149;
-  --yellow: #d29922;
-}
-body {
-  font-family: 'Inter', sans-serif;
-  background: var(--bg);
-  color: var(--text);
-  min-height: 100vh;
-}
-.mono { font-family: 'JetBrains Mono', monospace; }
-
-/* NAV */
-nav {
-  background: var(--bg-2);
-  border-bottom: 1px solid var(--border);
-  padding: 15px 40px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  backdrop-filter: blur(10px);
-}
-.nav-logo {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-weight: 700;
-  font-size: 1.2em;
-  cursor: pointer;
-}
-.nav-logo svg { width: 28px; height: 28px; }
-.nav-user {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-}
-.avatar {
-  width: 34px;
-  height: 34px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, var(--blue), var(--purple));
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 600;
-  font-size: 0.9em;
-}
-.btn-logout {
-  background: transparent;
-  color: var(--text-dim);
-  border: 1px solid var(--border);
-  padding: 6px 14px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 0.85em;
-  transition: all 0.2s;
-  font-family: inherit;
-}
-.btn-logout:hover { color: var(--red); border-color: var(--red); }
-
-/* MAIN */
-.container {
-  max-width: 1300px;
-  margin: 0 auto;
-  padding: 30px 40px;
-}
-
-/* WELCOME */
+/* Estilos específicos de dashboard.html */
 .welcome {
   background: linear-gradient(135deg, rgba(88,166,255,0.08), rgba(188,140,255,0.08));
   border: 1px solid var(--border);
@@ -134,8 +54,6 @@ nav {
   cursor: not-allowed;
   transform: none;
 }
-
-/* STATS */
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -171,8 +89,6 @@ nav {
   font-size: 0.8em;
   margin-top: 5px;
 }
-
-/* SECTIONS */
 .section {
   background: var(--bg-2);
   border: 1px solid var(--border);
@@ -199,8 +115,6 @@ nav {
   color: var(--text-dim);
   font-size: 0.85em;
 }
-
-/* CHART */
 .chart-container {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -239,8 +153,6 @@ nav {
   font-weight: 600;
   font-family: 'JetBrains Mono', monospace;
 }
-
-/* MODULES */
 .modules-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -324,8 +236,6 @@ nav {
   color: var(--yellow);
   font-weight: 600;
 }
-
-/* BADGES */
 .badges-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
@@ -360,8 +270,6 @@ nav {
   font-size: 0.8em;
   color: var(--text-dim);
 }
-
-/* LEVEL PROGRESS */
 .level-bar {
   background: var(--bg);
   border-radius: 10px;
@@ -402,8 +310,6 @@ nav {
   border-radius: 10px;
   transition: width 0.5s ease;
 }
-
-/* FOOTER */
 footer {
   background: var(--bg-2);
   border-top: 1px solid var(--border);
@@ -414,44 +320,8 @@ footer {
   margin-top: 40px;
 }
 footer a { color: var(--blue); text-decoration: none; }
-
-/* NOTIFICATION */
-.notification {
-  position: fixed;
-  top: 80px;
-  right: 30px;
-  background: var(--bg-2);
-  border: 1px solid var(--green);
-  border-left: 4px solid var(--green);
-  padding: 15px 20px;
-  border-radius: 10px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.4);
-  transform: translateX(400px);
-  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-  z-index: 1000;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  max-width: 350px;
-}
-.notification.show { transform: translateX(0); }
-.notification.error { border-color: var(--red); border-left-color: var(--red); }
-
-/* EMPTY STATE */
-.empty-state {
-  text-align: center;
-  padding: 40px 20px;
-  color: var(--text-dim);
-}
-.empty-icon {
-  font-size: 3em;
-  margin-bottom: 15px;
-}
-
-/* RESPONSIVE */
 @media (max-width: 900px) {
   .container { padding: 20px; }
-  nav { padding: 15px 20px; }
   .chart-container { grid-template-columns: 1fr; }
   .welcome { flex-direction: column; text-align: center; }
 }
@@ -545,7 +415,7 @@ footer a { color: var(--blue); text-decoration: none; }
   <div class="section">
     <div class="section-header">
       <div>
-        <div class="section-title"> Módulos del curso</div>
+        <div class="section-title">📚 Módulos del curso</div>
         <div class="section-subtitle">Completa todos para obtener el certificado</div>
       </div>
     </div>
@@ -573,123 +443,23 @@ footer a { color: var(--blue); text-decoration: none; }
   <span id="notifText"></span>
 </div>
 
+<script src="js/auth.js"></script>
+<script src="js/progress.js"></script>
+<script src="js/common.js"></script>
 <script>
-// ============ CONFIG ============
-const AUTH_KEY = 'learngithub_users';
-const SESSION_KEY = 'learngithub_session';
-
-const MODULES = [
-  { id: 'intro', emoji: '', title: '¿Qué es Git?', desc: 'Entiende la diferencia entre Git y GitHub', xp: 50, file: 'module-01-intro.html' },
-  { id: 'flow', emoji: '🔄', title: 'El Flujo de Git', desc: 'Working → Staging → Repository', xp: 50, file: 'module-02-flow.html' },
-  { id: 'terminal', emoji: '', title: 'Tu Primera Terminal', desc: 'Practica comandos reales de Git', xp: 50, file: 'module-03-terminal.html' },
-  { id: 'commits', emoji: '📸', title: 'Commits en Acción', desc: 'Aprende a hacer commits efectivos', xp: 50, file: 'module-04-commits.html' },
-  { id: 'branches', emoji: '', title: 'Branches', desc: 'Líneas de desarrollo paralelas', xp: 50, file: 'module-05-branches.html' },
-  { id: 'github', emoji: '☁️', title: 'GitHub & Push', desc: 'Sube tu código a la nube', xp: 50, file: 'module-06-github.html' },
-  { id: 'quiz', emoji: '🏆', title: 'Quiz Final', desc: 'Demuestra lo que aprendiste', xp: 100, file: 'module-07-quiz.html' }
-];
-
-const BADGES = [
-  { id: 'first_step', icon: '🎯', name: 'Primer paso', desc: 'Completa tu primer módulo', check: u => u.completedModules.length >= 1 },
-  { id: 'commander', icon: '💻', name: 'Comandante', desc: 'Usa la terminal interactiva', check: u => u.completedModules.includes('terminal') },
-  { id: 'photographer', icon: '📸', name: 'Fotógrafo', desc: 'Completa el módulo de commits', check: u => u.completedModules.includes('commits') },
-  { id: 'brancher', icon: '🌿', name: 'Ramificador', desc: 'Domina los branches', check: u => u.completedModules.includes('branches') },
-  { id: 'cloud', icon: '☁️', name: 'Nube', desc: 'Sube código a GitHub', check: u => u.completedModules.includes('github') },
-  { id: 'graduate', icon: '🏆', name: 'Graduado', desc: 'Completa el quiz final', check: u => u.completedModules.includes('quiz') },
-  { id: 'master', icon: '👑', name: 'Git Master', desc: 'Completa todos los módulos', check: u => u.completedModules.length >= 7 },
-  { id: 'streak', icon: '🔥', name: 'En racha', desc: '3 días seguidos de práctica', check: u => u.streak >= 3 }
-];
-
-const LEVELS = [
-  { level: 1, name: 'Novato', xp: 0 },
-  { level: 2, name: 'Aprendiz', xp: 100 },
-  { level: 3, name: 'Practicante', xp: 250 },
-  { level: 4, name: 'Intermedio', xp: 450 },
-  { level: 5, name: 'Avanzado', xp: 700 },
-  { level: 6, name: 'Experto', xp: 1000 },
-  { level: 7, name: 'Git Master', xp: 1500 }
-];
-
-// ============ STATE ============
+// Lógica específica de dashboard.html
 let currentUser = null;
 let progressChart = null;
 
-// ============ AUTH ============
-function getUsers() {
-  const data = localStorage.getItem(AUTH_KEY);
-  return data ? JSON.parse(data) : {};
-}
-
-function getSession() {
-  const data = localStorage.getItem(SESSION_KEY);
-  return data ? JSON.parse(data) : null;
-}
-
-function logout() {
-  localStorage.removeItem(SESSION_KEY);
-  window.location.href = 'index.html';
-}
-
-function getUserData() {
-  const session = getSession();
-  if (!session) {
-    window.location.href = 'index.html';
-    return null;
-  }
-  const users = getUsers();
-  return users[session.email] || null;
-}
-
-function saveUserData(data) {
-  const users = getUsers();
-  const session = getSession();
-  users[session.email] = data;
-  localStorage.setItem(AUTH_KEY, JSON.stringify(users));
-}
-
-// ============ STREAK ============
-function updateStreak(user) {
-  const today = new Date().toDateString();
-  const lastVisit = user.lastVisit;
-  
-  if (lastVisit !== today) {
-    const yesterday = new Date();
-    yesterday.setDate(yesterday.getDate() - 1);
-    
-    if (lastVisit === yesterday.toDateString()) {
-      user.streak = (user.streak || 0) + 1;
-    } else if (!lastVisit) {
-      user.streak = 1;
-    } else {
-      user.streak = 1;
-    }
-    user.lastVisit = today;
-  }
-  return user;
-}
-
-// ============ LEVEL ============
-function getLevel(xp) {
-  let current = LEVELS[0];
-  let next = LEVELS[1];
-  for (let i = 0; i < LEVELS.length; i++) {
-    if (xp >= LEVELS[i].xp) {
-      current = LEVELS[i];
-      next = LEVELS[i + 1] || { xp: LEVELS[i].xp + 500, name: 'Max' };
-    }
-  }
-  const progress = xp - current.xp;
-  const needed = next.xp - current.xp;
-  const pct = Math.min(100, (progress / needed) * 100);
-  return { current, next, progress, needed, pct };
-}
-
-// ============ RENDER ============
 function renderDashboard() {
-  currentUser = getUserData();
-  if (!currentUser) return;
+  currentUser = getCurrentUser();
+  if (!currentUser) {
+    window.location.href = 'index.html';
+    return;
+  }
   
   currentUser = updateStreak(currentUser);
-  saveUserData(currentUser);
+  saveCurrentUser(currentUser);
   
   // Nav
   document.getElementById('navName').textContent = currentUser.name;
@@ -707,7 +477,7 @@ function renderDashboard() {
     document.getElementById('welcomeText').textContent = `Siguiente: ${nextModule.emoji} ${nextModule.title}`;
     document.getElementById('btnContinue').disabled = false;
   } else {
-    document.getElementById('welcomeText').textContent = '¡Felicidades! Has completado todos los módulos ';
+    document.getElementById('welcomeText').textContent = '¡Felicidades! Has completado todos los módulos 🎉';
     document.getElementById('btnContinue').disabled = true;
     document.getElementById('btnContinue').textContent = '✅ Curso completado';
   }
@@ -715,7 +485,7 @@ function renderDashboard() {
   // Stats
   const xp = currentUser.xp || 0;
   document.getElementById('statXP').textContent = xp;
-  document.getElementById('statXPSub').textContent = xp > 0 ? `${getLevel(xp).current.name}` : 'Empieza a ganar XP';
+  document.getElementById('statXPSub').textContent = xp > 0 ? getLevel(xp).current.name : 'Empieza a ganar XP';
   
   document.getElementById('statModules').textContent = `${completed.length}/${MODULES.length}`;
   document.getElementById('statModulesSub').textContent = completed.length === MODULES.length ? '¡Curso completo!' : 'completados';
@@ -725,7 +495,7 @@ function renderDashboard() {
   document.getElementById('statBadgesSub').textContent = 'desbloqueados';
   
   document.getElementById('statStreak').textContent = currentUser.streak || 0;
-  document.getElementById('statStreakSub').textContent = (currentUser.streak || 0) >= 3 ? '🔥 ¡Imparable!' : 'días seguidos';
+  document.getElementById('statStreakSub').textContent = (currentUser.streak || 0) >= 3 ? ' ¡Imparable!' : 'días seguidos';
   
   // Level
   const levelInfo = getLevel(xp);
@@ -876,7 +646,6 @@ function renderChart() {
   `;
 }
 
-// ============ ACTIONS ============
 function openModule(id, file) {
   window.location.href = `modules/${file}`;
 }
@@ -889,19 +658,9 @@ function continueLearning() {
   }
 }
 
-function showNotification(icon, text, isError = false) {
-  const n = document.getElementById('notification');
-  document.getElementById('notifIcon').textContent = icon;
-  document.getElementById('notifText').textContent = text;
-  n.classList.toggle('error', isError);
-  n.classList.add('show');
-  setTimeout(() => n.classList.remove('show'), 2500);
-}
-
-// ============ INIT ============
+// Inicializar
 renderDashboard();
 </script>
 
 </body>
 </html>
-
