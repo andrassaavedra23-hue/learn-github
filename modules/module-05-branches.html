@@ -39,7 +39,7 @@
 <div class="container">
   <div class="lesson">
     <div class="lesson-header">
-      <div class="lesson-emoji"></div>
+      <div class="lesson-emoji">🌿</div>
       <div>
         <div class="lesson-title">Branches: Líneas paralelas</div>
         <div class="lesson-subtitle">Experimenta sin miedo a romper nada</div>
@@ -56,7 +56,7 @@
     <h3 style="margin: 25px 0 15px;">🎮 Crea branches visualmente</h3>
 
     <div class="branch-actions">
-      <button class="btn-action" onclick="createBranch('feature/login')">🌿 feature/login</button>
+      <button class="btn-action" onclick="createBranch('feature/login')"> feature/login</button>
       <button class="btn-action" onclick="createBranch('feature/dark-mode')">🌿 feature/dark-mode</button>
       <button class="btn-action" onclick="createBranch('fix/header-bug')">🐛 fix/header-bug</button>
       <button class="btn-action" onclick="mergeBranch()">🔀 Merge a main</button>
@@ -81,7 +81,7 @@
 
     <div class="nav-buttons">
       <button class="btn" onclick="window.location.href='module-04-commits.html'">← Anterior</button>
-     <button class="btn btn-primary" onclick="finishModule()">Completar módulo →</button>
+      <button class="btn btn-primary" onclick="finishModule()">Completar módulo →</button>
     </div>
   </div>
 </div>
@@ -111,8 +111,8 @@ function createBranch(name) {
 
 function mergeBranch() {
   const names = Object.keys(branches);
-  if (names.length === 0) { showNotification('️', 'Crea un branch primero'); return; }
-  if (merged) { showNotification('️', 'Ya hiciste merge'); return; }
+  if (names.length === 0) { showNotification('⚠️', 'Crea un branch primero'); return; }
+  if (merged) { showNotification('⚠️', 'Ya hiciste merge'); return; }
   const name = names[0];
   const br = branches[name];
   const last = br[br.length - 1];
@@ -121,7 +121,7 @@ function mergeBranch() {
   merged = true;
   moduleXp += 20;
   document.getElementById('xpCount').textContent = moduleXp;
-  showNotification('🔀', `+20 XP - Merge exitoso`);
+  showNotification('', `+20 XP - Merge exitoso`);
   renderBranchViz();
   checkProgress();
 }
@@ -211,7 +211,7 @@ function finishModule() {
   const progressText = document.getElementById('progressText').textContent;
   if (parseInt(progressText) < 90) { showNotification('⚠️', 'Crea un branch, haz merge y completa el quiz', true); return; }
   saveModuleProgress(MODULE_ID, moduleXp + 50);
-  showNotification('', '¡Módulo completado! +50 XP bonus');
+  showNotification('🎉', '¡Módulo completado! +50 XP bonus');
   setTimeout(() => window.location.href = '../dashboard.html', 1500);
 }
 
