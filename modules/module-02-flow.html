@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="UTF-8">
@@ -10,7 +10,8 @@
 <style>
 /* Estilos específicos Módulo 2 */
 .git-flow { display: flex; gap: 15px; justify-content: space-between; margin: 30px 0; flex-wrap: wrap; }
-.flow-area { flex: 1; min-width: 200px; background: var(--bg); border: 2px dashed var(--border); border-radius: 12px; padding: 20px; text-align: center; transition: all 0.3s; min-height: 150px; }
+.flow-area { flex: 1; min-width: 200px; background: var(--bg); border: 2px dashed var(--border); border-radius: 12px; padding: 20px; text-align: center; transition: all 0.3s; min-height: 150px; cursor: pointer; }
+.flow-area:hover { border-color: var(--blue); }
 .flow-area.active { border-color: var(--green); border-style: solid; background: rgba(63,185,80,0.05); }
 .flow-area h4 { font-size: 0.9em; color: var(--text-dim); margin-bottom: 15px; text-transform: uppercase; letter-spacing: 1px; }
 .file-chip { background: var(--bg-3); padding: 8px 14px; border-radius: 8px; font-size: 0.85em; margin: 5px; display: inline-block; font-family: 'JetBrains Mono', monospace; animation: pop 0.3s; }
@@ -18,10 +19,54 @@
 .file-chip.modified { border-left: 3px solid var(--orange); }
 .file-chip.staged { border-left: 3px solid var(--green); }
 .file-chip.committed { border-left: 3px solid var(--blue); }
-.flow-controls { display: flex; gap: 15px; justify-content: center; margin: 20px 0; }
+.flow-controls { display: flex; gap: 15px; justify-content: center; margin: 20px 0; flex-wrap: wrap; }
 .btn-action { background: var(--bg-3); color: var(--text); border: 1px solid var(--border); padding: 12px 24px; border-radius: 10px; cursor: pointer; font-family: inherit; font-weight: 600; transition: all 0.2s; }
 .btn-action:hover { background: var(--border); transform: translateY(-2px); }
 .btn-action:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+
+/* Panel de información */
+.area-detail {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 25px;
+  margin-top: 20px;
+  display: none;
+  animation: fadeIn 0.4s ease;
+}
+.area-detail.show { display: block; }
+.area-detail-header {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 15px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid var(--border);
+}
+.area-detail-icon { font-size: 2.5em; }
+.area-detail-title { font-size: 1.3em; font-weight: 700; }
+.area-detail-body { line-height: 1.7; color: var(--text-dim); }
+.area-detail-body strong { color: var(--text); }
+.area-example {
+  background: var(--bg-3);
+  border-left: 3px solid var(--blue);
+  padding: 12px 16px;
+  border-radius: 6px;
+  margin: 15px 0;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.9em;
+  color: var(--text);
+}
+.area-tag {
+  display: inline-block;
+  background: rgba(88,166,255,0.15);
+  color: var(--blue);
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 0.8em;
+  margin: 3px;
+  font-weight: 600;
+}
 </style>
 </head>
 <body>
@@ -45,28 +90,51 @@
 <div class="container">
   <div class="lesson">
     <div class="lesson-header">
-      <div class="lesson-emoji"></div>
+      <div class="lesson-emoji">🔄</div>
       <div>
         <div class="lesson-title">El Flujo de Git</div>
         <div class="lesson-subtitle">Working → Staging → Repository</div>
       </div>
     </div>
 
-    <p style="line-height: 1.7; margin-bottom: 20px;">Todo en Git pasa por <strong>3 áreas</strong>. Mueve los archivos usando los botones para simular el flujo real.</p>
+    <p style="line-height: 1.7; margin-bottom: 20px;">
+      Todo en Git pasa por <strong>3 áreas</strong>. Cada archivo que modificas viaja por estas zonas antes de quedar guardado permanentemente. Haz clic en cada área para entender qué hace.
+    </p>
+
+    <div class="info-box">
+      <strong>🎯 Analogía del envío de paquetes:</strong><br>
+      <strong>Working</strong> = Tu cuarto desordenado (archivos sueltos)<br>
+      <strong>Staging</strong> = La caja donde empacas lo que quieres enviar<br>
+      <strong>Repository</strong> = El paquete cerrado y etiquetado, listo para enviar
+    </div>
+
+    <h3 style="margin: 25px 0 15px;">🎮 Simula el flujo real</h3>
+    <p style="color: var(--text-dim); font-size: 0.9em; margin-bottom: 15px;">
+      Haz clic en las áreas para ver información detallada, luego usa los botones para mover los archivos:
+    </p>
 
     <div class="git-flow">
-      <div class="flow-area" id="area-working">
+      <div class="flow-area" id="area-working" onclick="showAreaDetail('working')">
         <h4>📝 Working Directory</h4>
         <div id="files-working"></div>
       </div>
-      <div class="flow-area" id="area-staging">
+      <div class="flow-area" id="area-staging" onclick="showAreaDetail('staging')">
         <h4>📦 Staging Area</h4>
         <div id="files-staging"></div>
       </div>
-      <div class="flow-area" id="area-committed">
+      <div class="flow-area" id="area-committed" onclick="showAreaDetail('committed')">
         <h4>💾 Repository</h4>
         <div id="files-committed"></div>
       </div>
+    </div>
+
+    <!-- Panel de información detallada -->
+    <div class="area-detail" id="areaDetail">
+      <div class="area-detail-header">
+        <div class="area-detail-icon" id="detailIcon"></div>
+        <div class="area-detail-title" id="detailTitle"></div>
+      </div>
+      <div class="area-detail-body" id="detailBody"></div>
     </div>
 
     <div class="flow-controls">
@@ -76,18 +144,24 @@
     </div>
 
     <div class="quiz" id="quiz1">
-      <div class="quiz-question">🧠 <span>¿Qué área prepara los archivos antes del commit?</span></div>
+      <div class="quiz-question">🧠 <span>¿Qué comando mueve archivos del Working Directory al Staging Area?</span></div>
       <div class="quiz-options">
-        <div class="quiz-option" onclick="answerQuiz('quiz1', this, false)"><div class="quiz-option-letter">A</div><div>Working Directory</div></div>
-        <div class="quiz-option" onclick="answerQuiz('quiz1', this, true)"><div class="quiz-option-letter">B</div><div>Staging Area</div></div>
-        <div class="quiz-option" onclick="answerQuiz('quiz1', this, false)"><div class="quiz-option-letter">C</div><div>Repository</div></div>
+        <div class="quiz-option" onclick="answerQuiz('quiz1', this, false)">
+          <div class="quiz-option-letter">A</div><div>git commit</div>
+        </div>
+        <div class="quiz-option" onclick="answerQuiz('quiz1', this, true)">
+          <div class="quiz-option-letter">B</div><div>git add</div>
+        </div>
+        <div class="quiz-option" onclick="answerQuiz('quiz1', this, false)">
+          <div class="quiz-option-letter">C</div><div>git push</div>
+        </div>
       </div>
       <div class="quiz-feedback" id="quiz1-feedback"></div>
     </div>
 
     <div class="nav-buttons">
       <button class="btn" onclick="window.location.href='module-01-intro.html'">← Anterior</button>
-      <button class="btn btn-primary" onclick="completeModule()">Completar módulo →</button>
+      <button class="btn btn-primary" id="btnFinish" onclick="finishModule()">Completar módulo →</button>
     </div>
   </div>
 </div>
@@ -98,9 +172,118 @@
 <script src="../js/progress.js"></script>
 <script src="../js/common.js"></script>
 <script>
+// ============ MÓDULO 2: FLUJO DE GIT ============
 const MODULE_ID = 'flow';
 let moduleXp = 0, flowDone = false, quizDone = false;
 let files = { working: ['index.html', 'style.css', 'app.js'], staging: [], committed: [] };
+let areasExplored = new Set();
+
+// Base de datos de áreas
+const AREAS = {
+  working: {
+    icon: '📝',
+    title: 'Working Directory - Tu Espacio de Trabajo',
+    body: `
+      <p>El <strong>Working Directory</strong> es donde editas tus archivos normalmente. Git observa los cambios pero aún no los guarda.</p>
+      <div class="area-example">
+        # Ver qué archivos cambiaron<br>
+        $ git status<br><br>
+        # Output:<br>
+        # Changes not staged for commit:<br>
+        #   modified:   index.html<br>
+        #   modified:   style.css
+      </div>
+      <p><strong>Características:</strong></p>
+      <p>📂 Es tu <strong>carpeta normal</strong> del proyecto<br>
+         ️ Aquí <strong>editas archivos</strong> con VS Code<br>
+         🔄 Git <strong>detecta cambios</strong> automáticamente<br>
+         ⚠️ Los cambios <strong>no están guardados</strong> en Git aún</p>
+      <div>
+        <span class="area-tag">Edición</span>
+        <span class="area-tag">Cambios</span>
+        <span class="area-tag">Local</span>
+      </div>
+    `
+  },
+  staging: {
+    icon: '📦',
+    title: 'Staging Area - Zona de Preparación',
+    body: `
+      <p>El <strong>Staging Area</strong> (o "índice") es donde seleccionas qué cambios quieres incluir en el próximo commit. Es como empacar una caja antes de enviarla.</p>
+      <div class="area-example">
+        # Agregar todos los cambios<br>
+        $ git add .<br><br>
+        # Agregar archivo específico<br>
+        $ git add index.html<br><br>
+        # Ver qué está en staging<br>
+        $ git status<br><br>
+        # Output:<br>
+        # Changes to be committed:<br>
+        #   new file:   index.html
+      </div>
+      <p><strong>¿Por qué existe?</strong></p>
+      <p>✅ Permite <strong>seleccionar</strong> qué cambios guardar<br>
+         ✅ Puedes hacer <strong>commits parciales</strong><br>
+         ✅ Es una <strong>zona de revisión</strong> antes de confirmar<br>
+         ✅ Evita commits <strong>accidentales</strong></p>
+      <div>
+        <span class="area-tag">Selección</span>
+        <span class="area-tag">Preparación</span>
+        <span class="area-tag">git add</span>
+      </div>
+    `
+  },
+  committed: {
+    icon: '',
+    title: 'Repository - Historial Permanente',
+    body: `
+      <p>El <strong>Repository</strong> es donde Git guarda permanentemente tus commits. Cada commit es una "foto" del proyecto con un mensaje descriptivo.</p>
+      <div class="area-example">
+        # Hacer commit con mensaje<br>
+        $ git commit -m "feat: agregar página de inicio"<br><br>
+        # Ver historial de commits<br>
+        $ git log --oneline<br><br>
+        # Output:<br>
+        # abc1234 feat: agregar página de inicio<br>
+        # def5678 Initial commit
+      </div>
+      <p><strong>Características:</strong></p>
+      <p>📸 Cada commit es un <strong>punto de guardado</strong><br>
+         📝 Tiene <strong>mensaje descriptivo</strong><br>
+         🔙 Puedes <strong>volver atrás</strong> a cualquier commit<br>
+         🌿 Cada commit tiene un <strong>hash único</strong> (abc1234)</p>
+      <div>
+        <span class="area-tag">Historial</span>
+        <span class="area-tag">Permanente</span>
+        <span class="area-tag">git commit</span>
+      </div>
+    `
+  }
+};
+
+function showAreaDetail(areaKey) {
+  const data = AREAS[areaKey];
+  if (!data) return;
+  
+  // Marcar como explorado (solo la primera vez)
+  if (!areasExplored.has(areaKey)) {
+    areasExplored.add(areaKey);
+    moduleXp += 5;
+    document.getElementById('xpCount').textContent = moduleXp;
+    showNotification('⭐', `+5 XP - Área explorada`);
+    updateProgress();
+  }
+  
+  document.getElementById('detailIcon').textContent = data.icon;
+  document.getElementById('detailTitle').textContent = data.title;
+  document.getElementById('detailBody').innerHTML = data.body;
+  
+  const detail = document.getElementById('areaDetail');
+  detail.classList.add('show');
+  detail.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  
+  console.log(`[Módulo 2] Área explorada: ${areaKey} | Total: ${areasExplored.size}/3`);
+}
 
 function updateUI() {
   document.getElementById('files-working').innerHTML = files.working.map(f => `<span class="file-chip modified">${f}</span>`).join('');
@@ -119,8 +302,8 @@ function updateUI() {
     moduleXp += 20;
     document.getElementById('xpCount').textContent = moduleXp;
     showNotification('⭐', '+20 XP - Flujo completado');
+    updateProgress();
   }
-  updateProgress();
 }
 
 function moveFiles(action) {
@@ -130,12 +313,14 @@ function moveFiles(action) {
     moduleXp += 5;
     document.getElementById('xpCount').textContent = moduleXp;
     showNotification('📦', '+5 XP - git add ejecutado');
+    updateProgress();
   } else if (action === 'commit' && files.staging.length > 0) {
     files.committed.push(...files.staging);
     files.staging = [];
     moduleXp += 10;
     document.getElementById('xpCount').textContent = moduleXp;
     showNotification('📸', '+10 XP - git commit ejecutado');
+    updateProgress();
   }
   updateUI();
 }
@@ -147,9 +332,15 @@ function resetFlow() {
 }
 
 function updateProgress() {
-  const progress = (flowDone ? 50 : 0) + (quizDone ? 50 : 0);
-  document.getElementById('moduleProgress').style.width = progress + '%';
-  document.getElementById('progressText').textContent = progress + '%';
+  const areaProgress = (areasExplored.size / 3) * 40; // 40% por explorar áreas
+  const flowProgress = flowDone ? 30 : 0; // 30% por completar flujo
+  const quizProgress = quizDone ? 30 : 0; // 30% por quiz
+  const total = Math.round(areaProgress + flowProgress + quizProgress);
+  
+  document.getElementById('moduleProgress').style.width = total + '%';
+  document.getElementById('progressText').textContent = total + '%';
+  
+  console.log(`[Módulo 2] Progreso: ${total}% (Áreas: ${areasExplored.size}/3, Flujo: ${flowDone}, Quiz: ${quizDone})`);
 }
 
 // Sobrescribir answerQuiz
@@ -169,22 +360,45 @@ answerQuiz = function(quizId, el, isCorrect) {
   } else {
     el.classList.add('wrong');
     options[1].classList.add('correct');
+    showNotification('❌', 'Incorrecto. La respuesta correcta es B: git add');
   }
   updateProgress();
-}
+};
 
-function completeModule() {
+// ⚠️ IMPORTANTE: Nombre diferente para evitar conflicto
+function finishModule() {
+  console.log('[Módulo 2] Botón completar clickeado');
+  
   const progressText = document.getElementById('progressText').textContent;
-  if (parseInt(progressText) < 100) { showNotification('⚠️', 'Completa el flujo y el quiz', true); return; }
-  completeModule(MODULE_ID, moduleXp + 50);
-  showNotification('', '¡Módulo completado! +50 XP bonus');
-  setTimeout(() => window.location.href = '../dashboard.html', 1500);
+  const progress = parseInt(progressText);
+  
+  console.log(`[Módulo 2] Progreso actual: ${progress}%`);
+  
+  if (progress < 100) { 
+    showNotification('⚠️', `Completa todas las actividades (${progress}/100%)`, true); 
+    return; 
+  }
+  
+  console.log(`[Módulo 2] Guardando progreso: ${moduleXp + 50} XP`);
+  
+  const saved = completeModule(MODULE_ID, moduleXp + 50);
+  console.log(`[Módulo 2] Progreso guardado: ${saved}`);
+  
+  showNotification('🎉', '¡Módulo completado! +50 XP bonus');
+  
+  setTimeout(() => {
+    window.location.href = '../dashboard.html';
+  }, 1500);
 }
 
+// Init
 const session = getSession();
 if (session) {
   const user = getCurrentUser();
-  if (user) document.getElementById('xpCount').textContent = user.xp || 0;
+  if (user) {
+    document.getElementById('xpCount').textContent = user.xp || 0;
+    console.log(`[Módulo 2] Usuario cargado: ${user.name} | XP: ${user.xp}`);
+  }
 }
 updateUI();
 </script>
