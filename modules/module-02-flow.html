@@ -381,7 +381,7 @@ function finishModule() {
   
   console.log(`[Módulo 2] Guardando progreso: ${moduleXp + 50} XP`);
   
-  const saved = completeModule(MODULE_ID, moduleXp + 50);
+  const saved = saveModuleProgress(MODULE_ID, moduleXp + 50);
   console.log(`[Módulo 2] Progreso guardado: ${saved}`);
   
   showNotification('🎉', '¡Módulo completado! +50 XP bonus');
