@@ -10,6 +10,4 @@ Aprende GitHub desde cero. Proyecto educativo de [Andrés Saavedra](https://gith
 - \css/\ → Estilos
 
 ## Estado
-🚧 En construcción — solo estructura inicial
-##actualizacion 
 🚧 beta online
