@@ -81,7 +81,7 @@
 
     <div class="nav-buttons">
       <button class="btn" onclick="window.location.href='module-04-commits.html'">← Anterior</button>
-      <button class="btn btn-primary" onclick="completeModule()">Completar módulo →</button>
+     <button class="btn btn-primary" onclick="finishModule()">Completar módulo →</button>
     </div>
   </div>
 </div>
@@ -207,10 +207,10 @@ answerQuiz = function(quizId, el, isCorrect) {
   updateProgress();
 }
 
-function completeModule() {
+function finishModule() {
   const progressText = document.getElementById('progressText').textContent;
   if (parseInt(progressText) < 90) { showNotification('⚠️', 'Crea un branch, haz merge y completa el quiz', true); return; }
-  completeModule(MODULE_ID, moduleXp + 50);
+  saveModuleProgress(MODULE_ID, moduleXp + 50);
   showNotification('', '¡Módulo completado! +50 XP bonus');
   setTimeout(() => window.location.href = '../dashboard.html', 1500);
 }
